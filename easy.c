@@ -480,6 +480,22 @@ bool isAnagram(char* s, char* t) {
     return !memcmp(counter_s, counter_t, sizeof(int) * ('z'-'a'+1));
 }
 
+int majorityElement(int* nums, int numsSize) {
+    int major = (numsSize >> 1);
+    int i;
+    
+    qsort(nums, numsSize, sizeof(int), numcmp);
+	/* for (i = 0; i < numsSize; i++) */
+	/* 	printf("%d\n", nums[i]); */
 
+    
+    for (i = 0; i < numsSize; i++) {
+	    if (nums[i] == nums[i + major]) {
+		    /* printf("%d %d %d %d\n", i, major, nums[i], nums[i+major]); */
+		    break;
+	    }
+    }
+    return nums[i];
+}
 
 
