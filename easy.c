@@ -480,6 +480,29 @@ bool isAnagram(char* s, char* t) {
     return !memcmp(counter_s, counter_t, sizeof(int) * ('z'-'a'+1));
 }
 
+#if 0
+/*
+Boyer-Moore Majority Vote Algorithm
+http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
+*/
+int majorityElement(int* nums, int numsSize) {
+    int major = nums[0];
+    int count = 1;
+    int i;
+    
+    for (i = 1; i < numsSize; i++) {
+        if (nums[i] == major) {
+            count++;
+        } else if (count == 0) {
+            major = nums[i];
+            count++;
+        } else {
+            count--;
+        }
+    }
+    return major;
+}
+#endif
 
 int majorityElement(int* nums, int numsSize) {
     int major = (numsSize >> 1);
