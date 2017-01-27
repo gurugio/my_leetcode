@@ -1,3 +1,18 @@
+int longestPalindrome(char* s) {
+    int counter[128] = {0,};
+    int i;
+    int len = strlen(s);
+    int sum = 0;
+    
+    for (i = 0; i < len; i++) {
+            counter[s[i]]++;
+            if (0 == (counter[s[i]] & 0x1)) /* every second */
+                sum++;
+    }
+    sum <<= 1;
+    return sum == len ? sum : sum+1;
+}
+
 int hammingDistance(int x, int y) {
     int mask = (1 << 30);
     int distance = 0;
