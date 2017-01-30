@@ -1,3 +1,51 @@
+int numtobit(int num)
+{
+        int table[16] = {0, //0
+                    1, //1
+                    1, //2
+                    2, //3
+                    1, //4
+                    2, //5
+                    2, //6
+                    3, //7
+                    1, //8 -  1000
+                    2, //9 -  1001
+                    2, //10 - 1010
+                    3, //11 - 1011
+                    2, //12 - 1100
+                    3, //13 - 1101
+                    3, //14 - 1110
+                    4}; //15 - 1111
+                    
+    return table[num/16] + table[num%16];
+}
+
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** readBinaryWatch(int num, int* returnSize) {
+    int count = 0;
+    char *tmp[1000];
+    char **ret;
+    int i, j;
+    for (i = 0; i < 12; i++) {
+        for (j = 0; j < 60; j++) {
+            if (numtobit(i) + numtobit(j) == num) {
+                char *t = calloc(6, sizeof(char));
+                sprintf(t, "%d:%.2d", i, j);
+                tmp[count++] = t;
+            }
+        }
+    }
+    ret = calloc(count, sizeof(char *));
+    for (i = 0; i < count; i++) {
+        ret[i] = tmp[i];
+    }
+    *returnSize = count;
+    return ret;
+}
+
 bool containsDuplicate(int* nums, int numsSize) {
     int i;
     
