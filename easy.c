@@ -1,3 +1,15 @@
+bool containsDuplicate(int* nums, int numsSize) {
+    int i;
+    
+    qsort(nums, numsSize, sizeof(int), numcmp);
+    for (i = 0; i < numsSize - 1; i++)
+        if (nums[i] == nums[i+1])
+            break;
+    if (i < numsSize - 1)
+        return 1;
+    return 0;
+}
+
 int longestPalindrome(char* s) {
     int counter[128] = {0,};
     int i;
