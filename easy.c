@@ -1,3 +1,51 @@
+/**
+ * Old version is return *(int *)a - *(int *)b
+ * but it's buggy because it cannot sort -2147483648 (-2147483648 - 1 = 2147483647)
+ */
+static int cmpint(const void *a, const void *b)
+{
+	int vala = *(int *)a;
+	int valb = *(int *)b;
+	if (vala > valb)
+		return 1;
+	else if (vala < valb)
+		return -1;
+	else
+		return 0;
+}
+
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    int i, j;
+    int *buf;
+    int index;
+    int *ret;
+    
+    qsort(nums1, nums1Size, sizeof(int), cmpint);
+    qsort(nums2, nums2Size, sizeof(int), cmpint);
+    
+    buf = calloc(nums2Size, sizeof(int));
+    index = 0;
+    
+    i = j = 0;
+    while (i < nums1Size && j < nums2Size) {
+        if (nums1[i] < nums2[j])
+            i++;
+        else if (nums1[i] > nums2[j])
+            j++;
+        else {
+            buf[index++] = nums1[i];
+            i++, j++;
+        }
+    }
+
+    *returnSize = index;
+    return buf;
+}
+
 int numtobit(int num)
 {
         int table[16] = {0, //0
