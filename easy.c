@@ -1,3 +1,12 @@
+int missingNumber(int* nums, int numsSize) {
+    int sum = (numsSize * (numsSize + 1)) / 2;
+    int lacksum = 0;
+    int i;
+    for (i = 0; i < numsSize; i++)
+        lacksum += nums[i];
+    return sum - lacksum;
+}
+
 /**
  * Definition for singly-linked list.
  * struct ListNode {
