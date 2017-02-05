@@ -1,3 +1,44 @@
+char* addStrings(char* num1, char* num2) {
+    int i, j;
+    char *sum = calloc(5100, sizeof(char));
+    int index = 0;
+    int c;
+    int v;
+    
+    c = 0;
+    i = strlen(num1) - 1;
+    j = strlen(num2) - 1;
+    while (i >= 0 || j >= 0 || c == 1) {
+        int a, b;
+        
+        if (i >= 0)
+            a = num1[i] - '0';
+        else
+            a = 0;
+            
+        if (j >= 0)
+            b = num2[j] - '0';
+        else
+            b = 0;
+        
+        v = a + b + c;
+        if (v >= 10) {
+            c = 1;
+            v -= 10;
+        } else
+            c = 0;
+        sum[index++] = v + '0';
+        i--, j--;
+    }
+
+    for (i = 0; i < index/2; i++) {
+        char t = sum[i];
+        sum[i] = sum[index - i - 1];
+        sum[index - i - 1] = t;
+    }
+    return sum;
+}
+
 int missingNumber(int* nums, int numsSize) {
     int sum = (numsSize * (numsSize + 1)) / 2;
     int lacksum = 0;
