@@ -1,3 +1,31 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* sortedArrayToBST(int* nums, int numsSize) {
+    int center;
+    struct TreeNode *root;
+    
+    if (numsSize == 0)
+        return NULL;
+
+    root = malloc(sizeof(*root));
+
+    if (numsSize & 0x1) // odd
+        center = numsSize/2;
+    else //even
+        center = numsSize/2 - 1;
+    root->val = nums[center];
+    root->left = sortedArrayToBST(&nums[0], center);
+    root->right = sortedArrayToBST(&nums[center + 1], numsSize - center - 1);
+    
+    return root;
+}
+
 char* addStrings(char* num1, char* num2) {
     int i, j;
     char *sum = calloc(5100, sizeof(char));
