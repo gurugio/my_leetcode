@@ -6,6 +6,73 @@
  *     struct TreeNode *right;
  * };
  */
+
+/*
+ * refer to: https://discuss.leetcode.com/topic/77335/proper-o-1-space
+ */
+struct mode_info {
+    int cur_val;
+    int cur_count;
+    int max_count;  // count of each mode
+    int mode_count; // # of mode
+    int *modes;
+};
+
+void travel(struct TreeNode *root, struct mode_info *info)
+{
+    if (root == NULL) return;
+    else {
+        travel(root->left, info);
+        
+        if (info->cur_val != root->val) {
+            info->cur_val = root->val;
+            info->cur_count = 1;
+        } else {
+            info->cur_count++;
+        }
+        
+        if (info->cur_count > info->max_count) {
+            info->max_count = info->cur_count;
+            info->mode_count = 1; // found new mode
+        } else if (info->cur_count == info->max_count) {
+            if (info->modes != NULL)
+                info->modes[info->mode_count] = info->cur_val;
+            info->mode_count++; // 
+        }
+        
+        travel(root->right, info);
+    }
+    return;
+}
+
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* findMode(struct TreeNode* root, int* returnSize) {
+    struct mode_info info;
+    memset(&info, 0, sizeof(info));
+    
+    info.cur_val = 0xffffffff;
+    travel(root, &info);
+    
+    info.cur_val = 0xffffffff;
+    info.modes = calloc(info.mode_count, sizeof(int));
+    info.mode_count = 0;
+    travel(root, &info);
+
+    *returnSize = info.mode_count;
+    return info.modes;
+}
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
 struct TreeNode* sortedArrayToBST(int* nums, int numsSize) {
     int center;
     struct TreeNode *root;
