@@ -1,3 +1,40 @@
+char* toHex(int num) {
+    int mod;
+    char table[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    char *str = calloc(10, sizeof(char));
+    int index = 0;
+    int i;
+    int minus = 0;
+    unsigned int absnum;
+    
+    if (num == 0) {
+        str[index++] = '0';
+        absnum = 0;  
+    } else if (num > 0) {
+        absnum = num;
+    }
+    else if (num < 0) {
+        absnum = -num;
+        absnum = ~absnum;
+        absnum++;
+    }
+
+    while (absnum != 0) {
+        mod = absnum % 16;
+        absnum /= 16;
+        //printf("%d %d\n", mod, absnum);
+        str[index++] = table[mod];
+    }
+    
+    for (i = 0; i < index/2; i++) {
+        char t = str[i];
+        str[i] = str[index - i - 1];
+        str[index - i - 1] = t;
+    }
+    str[index] = 0;
+    return str;
+}
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
