@@ -1,3 +1,12 @@
+//326. Power of Three
+bool isPowerOfThree(int n) {
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return  1;
+    return (n % 3) == 0 && isPowerOfThree(n / 3);
+}
+
 //121. Best Time to Buy and Sell Stock
 int maxProfit(int* prices, int pricesSize) {
 	int i;
