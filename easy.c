@@ -1,3 +1,23 @@
+//121. Best Time to Buy and Sell Stock
+int maxProfit(int* prices, int pricesSize) {
+	int i;
+	int min = 0xfffffff;
+	int profit = 0;
+
+	for (i = 0; i < pricesSize; i++) {
+		if (prices[i] < min)
+			min = prices[i];
+		else {
+			if (prices[i] - min > profit)
+				profit = prices[i] - min;
+		}
+		//printf("price=%d min=%d profit=%d\n",
+		//       arr[i], min, profit);
+	}
+	
+	return profit;
+}
+
 char* toHex(int num) {
     int mod;
     char table[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
