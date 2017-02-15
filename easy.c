@@ -1,3 +1,40 @@
+// 202. Happy Number
+// refer: https://discuss.leetcode.com/topic/12587/my-solution-in-c-o-1-space-and-no-magic-math-property-involved
+int get_happy(int n)
+{
+    int happy = 0;
+    while (n > 0) {
+        int digit = n % 10;
+        happy += digit*digit;
+        n /= 10;
+    }
+    return happy;
+}
+
+bool isHappy(int n) {
+    int happy;
+    int ret;
+    int slow;
+    int double_fast;
+    
+    slow = double_fast = n;
+    
+    while (1) {
+        slow = get_happy(slow);    
+        double_fast = get_happy(double_fast);
+        double_fast = get_happy(double_fast);
+        
+        if (slow == 1) {
+            ret = 1;
+            break;
+        } else if (slow == double_fast) {
+            ret = 0;
+            break;
+        }
+    }
+    return ret;
+}
+
 //326. Power of Three
 bool isPowerOfThree(int n) {
     if (n == 0)
