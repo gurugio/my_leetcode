@@ -1,3 +1,21 @@
+//231. Power of Two
+bool isPowerOfTwo(int n) {
+    int i;
+    int count = 0;
+    int bits = sizeof(int) * 8;
+    
+    if (n < 0)
+        return 0;
+        
+    for (i = 0; i < bits; i++) {
+        if (n & 0x1)
+            count++;
+        n >>= 1;
+    }
+    
+    return count == 1;
+}
+
 // 202. Happy Number
 // refer: https://discuss.leetcode.com/topic/12587/my-solution-in-c-o-1-space-and-no-magic-math-property-involved
 int get_happy(int n)
