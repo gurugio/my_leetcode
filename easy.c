@@ -1,3 +1,19 @@
+// 35. Search Insert Position
+int searchInsert(int* nums, int numsSize, int target) {
+    int i;
+    
+    if (target <= nums[0])
+        return 0;
+        
+    for (i = 0; i < numsSize; i++) {
+        if (nums[i] == target)
+            break;
+        if (target < nums[i])
+            break;
+    }
+    return i;
+}
+
 //231. Power of Two
 bool isPowerOfTwo(int n) {
     int i;
