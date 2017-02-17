@@ -1,3 +1,24 @@
+// 83. Remove Duplicates from Sorted List
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* deleteDuplicates(struct ListNode* head) {
+    struct ListNode *cur;
+    
+    cur = head;
+    while (cur != NULL) {
+        if (cur->next != NULL && cur->val == cur->next->val)
+            cur->next = cur->next->next;
+        else
+            cur = cur->next;
+    }
+    return head;
+}
+
 // 35. Search Insert Position
 int searchInsert(int* nums, int numsSize, int target) {
     int i;
