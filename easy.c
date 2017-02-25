@@ -1,3 +1,17 @@
+// 70. Climbing Stairs - no calculation version
+int climbStairs(int n) {
+    int record[1024] = {0,};
+    int i;
+    
+    record[0] = 0;
+    record[1] = 1;
+    record[2] = 2;
+    for (i = 3; i <= n; i++) {
+        record[i] = record[i - 1] + record[i - 2];
+    }
+    return record[n];
+}
+
 // 70. Climbing Stairs
 #if 0
 /*
