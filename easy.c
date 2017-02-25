@@ -1,3 +1,24 @@
+//53. Maximum Subarray
+//https://discuss.leetcode.com/topic/5000/accepted-o-n-solution-in-java
+#define max(a,b) (a) > (b) ? (a) : (b)
+
+int maxSubArray(int* nums, int numsSize) {
+    int cur_sum;
+    int max_sum;
+    int i;
+    
+    cur_sum = max_sum = nums[0];
+    
+    for (i = 1; i < numsSize; i++) {
+        cur_sum = max(nums[i] + cur_sum, nums[i]);
+        
+        if (cur_sum > max_sum)
+            max_sum = cur_sum;
+    }
+    
+    return max_sum;
+}
+
 // 83. Remove Duplicates from Sorted List
 /**
  * Definition for singly-linked list.
