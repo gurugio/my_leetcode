@@ -1,3 +1,94 @@
+// 70. Climbing Stairs
+#if 0
+/*
+ * recursion version
+ */
+int climbStairs(int n) {
+    if (n == 1) return 1;
+    else if (n == 2) return 2;
+    else return climbStairs(n - 1) + climbStairs(n - 2);
+}
+
+/*
+ * iterative version
+ */
+struct queue {
+    int tail;
+    int rear;
+    int *buf;
+};
+
+void push(struct queue *q, int v)
+{
+    q->buf[q->rear++] = v;
+}
+
+int pop(struct queue *q)
+{
+    int v;
+    do {
+        v = q->buf[q->tail++];
+        if (q->tail == q->rear)
+            break;
+    } while (v <= 2);
+    return v;
+}
+
+int climbStairs(int n)
+{
+    struct queue *q = malloc(sizeof(struct queue));
+    int tmp;
+    int step;
+    q->buf = calloc(4096000, sizeof(int));
+    q->rear = q->tail = 0;
+    
+    push(q, n);
+    while (1) {
+        tmp = pop(q);
+        if (tmp <= 2)
+            break;
+        push(q, tmp - 1);
+        push(q, tmp - 2);
+    }
+    
+    step = 0;
+    for (tmp = 0; tmp < q->rear; tmp++) {
+        if (q->buf[tmp] <= 2)
+            step += q->buf[tmp];
+    }
+    free(q->buf);
+    free(q);
+    return step;
+}
+#endif
+
+/*
+ * FINAL: record the previous results
+ */
+int _climbStairs(int *record, int n) {
+    if (record[n]) {
+        //printf("read [%d] = %d", n, record[n]);
+        return record[n];
+    }
+    if (n == 1) return 1;
+    else if (n == 2) return 2;
+    else {
+        record[n] = _climbStairs(record, n - 1) + _climbStairs(record, n - 2);
+        //printf("record [%d] = %d", n, record[n]);
+        return record[n];
+    }
+}
+
+int climbStairs(int n) {
+    int record[1024] = {0,};
+    int i;
+    
+    record[0] = 0;
+    record[1] = 1;
+    record[2] = 2;
+    return _climbStairs(record, n);
+}
+
 //53. Maximum Subarray
 //https://discuss.leetcode.com/topic/5000/accepted-o-n-solution-in-java
 #define max(a,b) (a) > (b) ? (a) : (b)
