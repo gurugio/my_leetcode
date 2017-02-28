@@ -1,3 +1,23 @@
+//112. Path Sum
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+bool hasPathSum(struct TreeNode* root, int sum) {
+    if (!root)
+        return false;
+ 
+    if (!root->left && !root->right && root->val == sum)
+        return true;
+    else 
+        return hasPathSum(root->left, sum - root->val) ||
+                hasPathSum(root->right, sum - root->val);
+}
+
 // 70. Climbing Stairs - no calculation version
 int climbStairs(int n) {
     int record[1024] = {0,};
