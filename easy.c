@@ -1,3 +1,96 @@
+// 113. Path Sum II
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct path {
+    int index;
+    int nums[1024];
+    int count;
+    int cur_pathes;
+    int *pathes_length;
+    int **pathes;
+};
+
+void __pathSum(struct TreeNode *root, int sum, struct path *path)
+{
+    int index;
+    
+    if (!root)
+        return;
+
+    path->nums[path->index] = root->val;
+    path->index++;
+ 
+    if (!root->left && !root->right && root->val == sum) {
+        int i;
+        /*for (i = 0; i < path->index; i++)
+            printf("%d ", path->nums[i]);
+        printf("\n");*/
+
+        if (path->pathes == NULL)
+            path->count++;
+        else {
+            path->pathes_length[path->cur_pathes] = path->index;
+            path->pathes[path->cur_pathes] = calloc(path->index, sizeof(int));
+            memcpy(path->pathes[path->cur_pathes], path->nums, sizeof(int) * path->index);
+            //printf("copy-%d %d\n", path->cur_pathes, path->pathes_length[path->cur_pathes]);
+            path->cur_pathes++;
+
+        }
+        return;
+    }
+
+    index = path->index;
+    if (root->left) {
+        __pathSum(root->left, sum - root->val, path);
+    }
+    
+    path->index = index;
+    if (root->right) {
+        __pathSum(root->right, sum - root->val, path);
+    }
+}
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** pathSum(struct TreeNode* root, int sum, int** columnSizes, int* returnSize) {
+    struct path p;
+    int i;
+    
+    p.index = 0;
+    p.count = 0;
+    p.cur_pathes = 0;
+    p.pathes_length = NULL;
+    p.pathes = NULL;
+    
+    __pathSum(root, sum, &p);
+    
+    //printf("count=%d\n", p.count);
+    
+    p.index = 0;
+    p.pathes_length = calloc(p.count, sizeof(int));
+    p.pathes = calloc(p.count, sizeof(int *));
+    //for (i = 0; i < p.count; i++) {
+       // p.pathes_length[i] = calloc(1, sizeof(int));
+        //p.pathes[i] = calloc(20, sizeof(int));
+    //}
+    
+    __pathSum(root, sum, &p);
+    
+    *columnSizes = p.pathes_length;
+    *returnSize = p.count;
+    
+    return p.pathes;
+}
+
 //112. Path Sum
 /**
  * Definition for a binary tree node.
