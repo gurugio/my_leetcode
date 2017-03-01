@@ -1,3 +1,21 @@
+// 437. Path Sum III
+int checkPathSum(struct TreeNode* root, int sum) {
+    int count = 0;
+    if (!root)
+        return 0;
+    if (root->val == sum)
+        count++;
+    return count + checkPathSum(root->left, sum - root->val) 
+            + checkPathSum(root->right, sum - root->val);
+}
+
+int pathSum(struct TreeNode *root, int sum) {
+    if (!root) return 0;
+    return checkPathSum(root, sum) +
+            pathSum(root->left, sum) +
+            pathSum(root->right, sum);
+}
+
 // 113. Path Sum II
 /**
  * Definition for a binary tree node.
