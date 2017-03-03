@@ -1,3 +1,48 @@
+// 459. Repeated Substring Pattern
+int pattern_size(char *str, int old_size)
+{
+	int size;
+	int len = strlen(str);
+
+	for (size = old_size + 1; size <= len; size++) {
+        if ((len % size) != 0) continue;
+		//printf("size:%s %s %d\n", &str[0], &str[size], size);
+		if (strncmp(&str[0], &str[size], size) == 0)
+			return size;
+	}
+	return -1;
+}
+
+int pattern_check(char *str, int size)
+{
+	int index;
+	int len = strlen(str);
+
+	for (index = size*2; index <= len; index += size) {
+		//printf("cmp:%s %s %d\n", &str[0], &str[index], size);
+		if (strncmp(&str[0], &str[index], size) != 0)
+			break;
+	}
+	if (index == len)
+		return 1;
+	return 0;
+}
+
+bool repeatedSubstringPattern(char* s) {
+    int size = 0;
+	int ret;
+    int len = strlen(s);
+	
+	do {
+		size = pattern_size(s, size);
+		if (size < 0) break;
+		ret = pattern_check(s, size);
+		if (ret > 0) break;
+
+	} while (size <= len/2);
+	return ret;
+}
+
 // 437. Path Sum III
 int checkPathSum(struct TreeNode* root, int sum) {
     int count = 0;
