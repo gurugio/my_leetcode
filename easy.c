@@ -1,4 +1,125 @@
 // 107. Binary Tree Level Order Traversal II
+/* O(n) version
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct queue {
+	struct TreeNode *buf[100000];
+	int rear;
+	int tail;
+};
+
+int qcount(struct queue *q)
+{
+	return q->rear - q->tail;
+}
+
+void qpush(struct queue *q, struct TreeNode *p)
+{
+	assert(q->rear < 100000);
+	q->buf[q->rear++] = p;
+}
+
+void qprint(struct queue *q)
+{
+	int i;
+
+	for (i = q->tail; i < q->rear; i++)
+		printf("%d ", q->buf[i]->val);
+	printf("\n");
+}
+
+struct TreeNode *qpop(struct queue *q)
+{
+	if (q->tail == q->rear)
+		return NULL;
+	return q->buf[q->tail++];
+}
+
+void get_max_level(struct TreeNode *root, int cur, int *max)
+{
+    if (!root) return;
+    if (cur > *max)
+        *max = cur;
+    get_max_level(root->left, cur + 1, max);
+    get_max_level(root->right, cur + 1, max);
+}
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** levelOrderBottom(struct TreeNode* root, int** columnSizes, int* returnSize) {
+	int cur_level = 0;
+	int max_level = 0;
+	int cur_count;
+	struct queue *q;
+	int *level_count;
+	int **level_store;
+	int i;
+	
+	get_max_level(root, 0, &max_level);
+	level_count = calloc(max_level + 1, sizeof(int));
+	level_store = calloc(max_level + 1, sizeof(int *));
+	
+	q = malloc(sizeof(*q));
+	q->rear = q->tail = 0;
+
+	if (root)
+		qpush(q, root);
+
+	while (1) {
+		struct TreeNode *t;
+		
+		cur_count = qcount(q);
+		if (cur_count == 0)
+			break;
+		
+		level_count[cur_level] = cur_count;
+		level_store[cur_level] = calloc(cur_count, sizeof(int));
+		
+		//printf("level-%d count-%d\n", cur_level, cur_count);
+		//qprint(q);
+		
+		for (i = 0; i < cur_count; i++) {
+			t = qpop(q);
+			level_store[cur_level][i] = t->val;
+			
+			if (t->left)
+				qpush(q, t->left);
+			if (t->right)
+				qpush(q, t->right);
+		}
+		
+		cur_level++;
+	}
+	free(q);
+	
+	for (i = 0; i < cur_level/2; i++) {
+	    int *t;
+	    int d;
+	    t = level_store[i];
+	    level_store[i] = level_store[cur_level - i - 1];
+	    level_store[cur_level - i - 1] = t;
+	    
+	    d = level_count[i];
+	    level_count[i] = level_count[cur_level - i - 1];
+	    level_count[cur_level - i - 1] = d;
+	}
+	
+	*columnSizes = level_count;
+	*returnSize = cur_level;
+	return level_store;
+}
+
+// 107. Binary Tree Level Order Traversal II
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -11,6 +132,7 @@
 /*
  * I could make this one-path solution with more temporary buffers,
  * so I made this two-path.
+ * BUT THIS IS O(n^2)
  */
 void get_max_level(struct TreeNode *root, int cur, int *max, int *level_count)
 {
