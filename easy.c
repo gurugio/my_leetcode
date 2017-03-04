@@ -1,3 +1,80 @@
+// 107. Binary Tree Level Order Traversal II
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+/*
+ * I could make this one-path solution with more temporary buffers,
+ * so I made this two-path.
+ */
+void get_max_level(struct TreeNode *root, int cur, int *max, int *level_count)
+{
+    if (!root) return;
+    if (cur > *max)
+        *max = cur;
+    level_count[cur]++;
+    get_max_level(root->left, cur + 1, max, level_count);
+    get_max_level(root->right, cur + 1, max, level_count);
+}
+
+void get_val_level(struct TreeNode *root, int cur, int target, int *store, int *count)
+{
+    if (!root) return;
+
+    if (cur == target) {
+        //printf("level=%d count=%d val=%d\n", cur, *count, root->val);
+        store[*count] = root->val;
+        (*count)++;
+    }
+    get_val_level(root->left, cur + 1, target, store, count);
+    get_val_level(root->right, cur + 1, target, store, count);
+}
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** levelOrderBottom(struct TreeNode* root, int** columnSizes, int* returnSize) {
+    int level = 0;
+    int *level_index;
+    int **level_store;
+    int i;
+    int *tmp_level_count = calloc(1000, sizeof(int));
+    
+    get_max_level(root, 0, &level, tmp_level_count);
+    printf("level=%d\n", level);
+
+    /*
+     * max leve = 2 -> array size = 3
+     */
+    level_index = calloc(level + 1, sizeof(int));
+    level_store = calloc(level + 1, sizeof(int *));
+    
+    for (i = 0; i <= level; i++) {
+        /* store[0] stores values of the max level */
+        int target = level - i;
+
+        if (tmp_level_count[target] != 0)
+            level_store[i] = calloc(tmp_level_count[target], sizeof(int));
+        //printf("level-%d count=%d store-%p\n", target, tmp_level_count[target], level_store[i]);
+
+        get_val_level(root, 0, target, level_store[i], &level_index[i]);
+    }
+    
+    if (tmp_level_count[0] != 0)
+        *returnSize = level + 1;
+    else
+        *returnSize = 0;
+    *columnSizes = level_index;
+    return level_store;
+}
+
 // 263. Ugly Number
 bool isUgly(int num) {
     if (num == 0) return false;
