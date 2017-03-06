@@ -1,3 +1,22 @@
+// 235. Lowest Common Ancestor of a Binary Search Tree
+// 30% version, why so slow?
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q)
+{
+    struct TreeNode *l, *r;
+    if (root == NULL) return NULL;
+    if (root == q || root == p)
+        return root;
+    l = lowestCommonAncestor(root->left, p, q);
+    r = lowestCommonAncestor(root->right, p, q);
+    if (r && l)
+        return root;
+    else if (r)
+        return r;
+    else if (l)
+        return l;
+    return NULL;
+}
+
 // 107. Binary Tree Level Order Traversal II
 /* O(n) version
  */
