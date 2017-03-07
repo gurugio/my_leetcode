@@ -1,3 +1,43 @@
+// 21. Merge Two Sorted Lists
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
+    struct ListNode *head;
+    struct ListNode *ret;
+    if (l1 == NULL)
+        return l2;
+    if (l2 == NULL)
+        return l1;
+
+    if (l1->val < l2->val) {
+        head = l1;
+        l1 = l1->next;
+    } else {
+        head = l2;
+        l2 = l2->next;
+    }
+    ret = head;
+    //printf("head=%d\n", head->val);
+    while (l1 != NULL && l2 != NULL) {
+        if (l1->val < l2->val) {
+            head->next = l1;
+            l1 = l1->next;
+            head = head->next;
+        } else {
+            head->next = l2;
+            l2 = l2->next;
+            head = head->next;
+        }
+        //printf("head=%d\n", head->val);
+    }
+    
+    if (l1 != NULL)
+        head->next = l1;
+    
+    if (l2 != NULL)
+        head->next = l2;
+    
+    return ret;
+}
+
 // 235. Lowest Common Ancestor of a Binary Search Tree
 // 30% version, why so slow?
 struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q)
