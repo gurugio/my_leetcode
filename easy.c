@@ -1,3 +1,123 @@
+
+// 198. House Robber - FAIL version
+// depth first travle is too slow.
+struct head {
+	struct node *next;
+	int val;
+	int visit;
+};
+
+struct node {
+	struct node *next;
+	int index;
+};
+
+
+struct head *build_heap(int *nums, int numsSize)
+{
+	struct head *heads;
+	int i,j;
+
+	heads = calloc(numsSize, sizeof(struct head));
+	for (i = 0; i < numsSize; i++) {
+		struct head *h;
+		struct node *n;
+		
+		h = &heads[i];
+		h->val = nums[i];
+		h->visit = 0;
+		h->next = NULL;
+		
+		//printf("head[%d]->", i);
+		// t -> [0 ~ (t-2)] -> [(t+2) ~ n]
+		for (j = 0; j < i - 1; j++) {
+			// add node to head
+			//printf("[%d] ", j);
+			n = malloc(sizeof(struct node));
+			n->index = j;
+			n->next = h->next;
+			h->next = n;
+		}
+		for (j = i + 2; j < numsSize; j++) {
+			//printf("[%d] ", j);
+			n = malloc(sizeof(struct node));
+			n->index = j;
+			n->next = h->next;
+			h->next = n;
+		}
+		//printf("\n");
+	}
+	return heads;
+}
+
+bool check_side(struct head *heads, int size, int index)
+{
+	if (heads[index].visit == 1)
+		return false;
+	if (index == 0 && heads[1].visit == 0)
+		return true;
+	if (index == size - 1 && heads[index - 1].visit == 0)
+		return true;
+	if (heads[index - 1].visit == 0 && heads[index + 1].visit == 0)
+		return true;
+	return false;
+}
+
+void travel_heap_depth(struct head *heads, int size, struct head *cur, int sum, int *max)
+{
+	struct node *n;
+	
+	cur->visit = 1;
+	sum += cur->val;
+	//printf("visit=%d sum=%d\n", cur->val, sum);
+
+	if (*max < sum) {
+		//printf("set-max=%d\n", sum);
+		*max = sum;
+	}
+	
+	n = cur->next;
+	while (n != NULL) {
+		//printf("try=%d\n", n->index);
+		//if (heads[n->index].visit == 0) {
+		if (check_side(heads, size, n->index)) 
+			travel_heap_depth(heads, size, &heads[n->index],
+					  sum, max);
+		n = n->next;
+	}
+
+	cur->visit = 0;
+}
+
+int rob(int* nums, int numsSize)
+{
+	struct head *heads;
+	int max = 0;
+	int i, j;
+	
+	heads = build_heap(nums, numsSize);
+
+	for (j = 0; j < numsSize; j++) {
+		for (i = 0; i < numsSize; i++)
+			heads[i].visit = 0;
+		travel_heap_depth(heads, numsSize, &heads[j], 0, &max);
+		//printf("=== max=%d\n", max);
+	}
+
+	return max;
+}
+	
+int main(void)
+{
+	int arr[] = {183,219,57,193,94,233,202,154,65,240,97,234,100,249,186,66,90,238,168,128,177,235,50,81,185,165,217,207,88,80,112,78,135,62,228,247,211};
+	//int arr[] = {1,1,1,1};
+	//int arr[] = {1,1,3,6,7,10,7,1,8,5,9,1,4,4,3};
+	printf("max=%d\n", rob(arr, sizeof(arr)/sizeof(arr[0])));
+
+	return 0;
+}
+
+
 // 21. Merge Two Sorted Lists
 struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
     struct ListNode *head;
