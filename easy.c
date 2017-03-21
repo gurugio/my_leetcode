@@ -1,3 +1,13 @@
+// 342. Power of Four
+bool isPowerOfFour(int num) {
+    int i;
+    
+    for (i = 0; i < 32; i += 2) {
+        if (num == (1<<i))
+            return true;
+    }
+    return false;
+}
 
 // 198. House Robber - FAIL version
 // depth first travle is too slow.
