@@ -1,3 +1,40 @@
+// 345. Reverse Vowels of a String
+int is_vowel(char c)
+{
+    int vowels[] = {1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0};
+    c &= ~0x20;
+    if (c >= 0x41 && c <= 0x5a)
+        return vowels[c - 0x41];
+    return 0;
+}   
+char* reverseVowels(char* s) {
+    int i, j;
+    int len = strlen(s);
+    
+    i = 0;
+    j = len - 1;
+    while (1) {
+        char t;
+        for (; i < j; i++) {
+            if (is_vowel(s[i]))
+                break;
+        }
+        for (; j > i; j--) {
+            if (is_vowel(s[j]))
+                break;
+        }       
+
+        if (i >= j)
+            break;
+
+        t = s[i];
+        s[i] = s[j];
+        s[j] = t;
+        i++,j--;
+    }
+    return s;
+}
+
 // 342. Power of Four
 bool isPowerOfFour(int num) {
     int i;
