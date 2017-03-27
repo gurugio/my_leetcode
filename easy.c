@@ -1,3 +1,46 @@
+// 367. Valid Perfect Square
+#define MAX (64*1024)
+bool isPerfectSquare(int num) {
+    int i;
+    int a, b;
+    int last_digit = num % 10;
+    
+    switch (last_digit) {
+        case 0:
+            for (a = 10; a < MAX; a += 10) {
+                if (num == a*a)
+                    return true;
+            }
+            return false;
+            break;
+        case 1:
+            a = 1, b = 9;
+            break;
+        case 4:
+            a = 2, b = 8;
+            break;
+        case 9:
+            a = 3, b = 7;
+            break;
+        case 6:
+            a = 4, b = 6;
+            break;
+        case 5:
+            for (a = 5; a < MAX; a += 5)
+                if (num == a*a)
+                    return true;
+            return false;
+            break;
+        default:
+            return false;
+    }
+    for (; a < MAX || b < MAX; a += 10, b += 10) {
+        if (num == a*a || num == b*b)
+            return true;
+    }
+    return false;
+}
+
 // 345. Reverse Vowels of a String
 int is_vowel(char c)
 {
