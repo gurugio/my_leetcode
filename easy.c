@@ -1,3 +1,32 @@
+// 27. Remove Element
+int removeElement(int* nums, int numsSize, int val) {
+    int last;
+    int first;
+    
+    last = numsSize - 1;
+    first = 0;
+    
+    while (first <= last) {
+        while (nums[last] == val && last > first)
+            last--;
+        
+        while (nums[first] != val && first <= last)
+            first++;
+        
+        if (first >= last)
+            break;
+
+        {
+            int t;
+            t = nums[last];
+            nums[last] = nums[first];
+            nums[first] = t;
+        }
+        
+    }
+    return first;
+}
+
 // 367. Valid Perfect Square
 #define MAX (64*1024)
 bool isPerfectSquare(int num) {
