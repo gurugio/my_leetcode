@@ -1,3 +1,82 @@
+// 101. Symmetric Tree
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+int get_count(struct TreeNode *root)
+{
+    if (root == NULL)
+        return 1;
+    return 1 + get_count(root->left) + get_count(root->right);
+}
+
+void travel_left(struct TreeNode *root, int *array, int *index)
+{
+    if (!root) {
+        //printf("left[%d]->%d\n", *index, 0);
+        array[*index] = 0;
+        (*index)++;
+        return;
+    }
+    array[*index] = root->val;
+    //printf("left[%d]->%d\n", *index, root->val);
+    (*index)++;
+    travel_left(root->left, array, index);
+    travel_right(root->right, array, index);
+}
+
+void travel_right(struct TreeNode *root, int *array, int *index)
+{
+    if (!root) {
+        //printf("right[%d]->%d\n", *index, 0);
+        array[*index] = 0;
+        (*index)++;
+        return;
+    }
+    array[*index] = root->val;
+    //printf("right[%d]->%d\n", *index, root->val);
+    (*index)++;
+    travel_right(root->right, array, index);
+    travel_left(root->left, array, index);
+}
+
+bool isSymmetric(struct TreeNode* root) {
+    int count = get_count(root);
+    int *buf[2];
+    int i;
+    int left_index, right_index;
+    
+    if (count == 1) return true;
+    
+    buf[0] = calloc(count, sizeof(int));
+    buf[1] = calloc(count, sizeof(int));
+    
+    left_index = 0;
+    right_index = 0;
+    travel_left(root->left, buf[0], &left_index);
+    travel_right(root->right, buf[1], &right_index);
+    
+    if (left_index != right_index)
+        return false;
+        
+    for (i = 0; i < left_index; i++) {
+        if (buf[0][i] != buf[1][i])
+            break;
+    }
+    
+    free(buf[0]);
+    free(buf[1]);
+    
+    if (i == left_index)
+        return true;
+    return false;
+}
+
 // 27. Remove Element
 int removeElement(int* nums, int numsSize, int val) {
     int last;
