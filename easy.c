@@ -1,3 +1,42 @@
+// 66. Plus One
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* plusOne(int* digits, int digitsSize, int* returnSize) {
+    int c;
+    int i;
+    int *ret;
+    
+    c = 0;
+    digits[digitsSize - 1]++;
+    if (digits[digitsSize - 1] >= 10) {
+        c = 1;
+        digits[digitsSize - 1] = 0;
+    }
+    
+    for (i = digitsSize - 2; i >= 0; i--) {
+        digits[i] += c;
+        if (digits[i] >= 10) {
+            c = 1;
+            digits[i] = 0;
+        } else
+            c = 0;
+    }
+    
+    if (c) {
+        ret = calloc(digitsSize + 1, sizeof(int));
+        memcpy(&ret[1], digits, sizeof(int) * digitsSize);
+        ret[0] = 1;
+        *returnSize = digitsSize + 1;
+    } else {
+        ret = calloc(digitsSize, sizeof(int));
+        memcpy(ret, digits, sizeof(int) * digitsSize);
+        *returnSize = digitsSize;
+    }
+    return ret;
+}
+
 // 101. Symmetric Tree
 /**
  * Definition for a binary tree node.
