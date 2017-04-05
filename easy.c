@@ -1,3 +1,27 @@
+// 434. Number of Segments in a String
+int countSegments(char* s) {
+    int count = 0;
+    int len = strlen(s);
+    int i;
+#if 0   
+    for (; i < len; i++) {
+        if (s[i] != 0x20)
+            count++;
+
+        for (; i < len; i++) {
+            if (s[i] == 0x20)
+                break;
+        }
+    }
+#endif
+    s = strtok(s, " ");
+    while(s != NULL) {
+        count++;
+        s = strtok(NULL, " ");
+    }
+    return count;
+}
+
 // 118. Pascal's Triangle
 /**
  * Return an array of arrays.
