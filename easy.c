@@ -1,3 +1,38 @@
+// 118. Pascal's Triangle
+/**
+ * Return an array of arrays.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** generate(int numRows, int** columnSizes) {
+    int **rows;
+    int *row_sizes;
+	int i, j;
+
+	rows = calloc(numRows, sizeof(int *));
+	row_sizes = calloc(numRows, sizeof(int));
+
+	rows[0] = calloc(1, sizeof(int));
+	row_sizes[0] = 1;
+	rows[0][0] = 1;
+	
+	for (i = 1; i < numRows; i++) {
+		rows[i] = calloc(i + 1, sizeof(int));
+		row_sizes[i] = i+1;
+		rows[i][0] = rows[i][i] = 1;
+
+		for (j = 1; j < i; j++) {
+			rows[i][j] = rows[i-1][j-1] + rows[i-1][j];
+		}
+
+		//for (j = 0; j < i+1; j++)
+		//	printf("%d ", rows[i][j]);
+		//printf("\n");
+	}
+	*columnSizes = row_sizes;
+	return rows;
+}
+
 // 66. Plus One
 /**
  * Return an array of size *returnSize.
