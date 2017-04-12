@@ -1,3 +1,68 @@
+// 257. Binary Tree Paths
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+#define SIZE 512
+struct path {
+	int tmp[SIZE];
+	char *results[SIZE];
+	int count;
+};
+
+void __getpath(struct TreeNode *root, struct path *path, int level)
+{
+	if (!root) return;
+
+	path->tmp[level] = root->val;
+	//printf("add:%d\n", root->val);
+	
+	if (root->left)
+		__getpath(root->left, path, level+1);
+		
+	if (root->right)
+		__getpath(root->right, path, level+1);
+	
+	if (!root->left && !root->right) {
+		int len = (level + 2) * 3 /* each digit is 3-char include \0 */ + 2 * level/* -> */;
+		char *p = calloc(len, sizeof(char));
+		int i;
+		int r = 0;
+		for (i = 0; i < level; i++) {
+			r += sprintf(&p[r], "%d->", path->tmp[i]);
+			//printf("%d->", path->tmp[i]);
+		}
+		sprintf(&p[r], "%d", path->tmp[i]);
+		//printf("%d\n", path->tmp[i]);
+		path->results[path->count] = p;
+		path->count++;
+	}
+}
+
+char** binaryTreePaths(struct TreeNode* root, int* returnSize) {
+    struct path p;
+	char **ret;
+	int i;
+	
+	memset(p.tmp, 0, SIZE);
+	p.count = 0;
+
+	__getpath(root, &p, 0);
+	*returnSize = p.count;
+	ret = calloc(p.count, sizeof(char *));
+	for (i = 0; i < p.count; i++)
+		ret[i] = p.results[i];
+	return ret;
+}
+
 // 110. Balanced Binary Tree
 /**
  * Definition for a binary tree node.
