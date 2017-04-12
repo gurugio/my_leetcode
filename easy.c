@@ -1,3 +1,49 @@
+// 110. Balanced Binary Tree
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+void get_height(struct TreeNode *root, int cur, int *h)
+{
+    if (!root) return;
+    if (cur > *h)
+        *h = cur;
+    get_height(root->left, cur+1, h);
+    get_height(root->right, cur+1, h);
+}
+
+#if 0
+// SLOW version of get_height
+// This version goes to bottom and comes to top to get height.
+// But above version only goes to bottom to get height.
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+int get_height(struct TreeNode *root)
+{
+    if (!root) return 0;
+    return MAX(get_height(root->left), get_height(root->right)) + 1;
+}
+#endif
+
+bool isBalanced(struct TreeNode* root) {
+    int hl = 0, hr = 0;
+
+    if (!root) return true;
+
+    if (root->left) 
+        get_height(root->left, 1, &hl);
+    if (root->right)
+        get_height(root->right, 1, &hr);
+        
+    if (hl - hr < -1 || hl - hr > 1)
+        return false;
+    
+    return isBalanced(root->left) && isBalanced(root->right);
+}
+
 // 434. Number of Segments in a String
 int countSegments(char* s) {
     int count = 0;
