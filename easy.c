@@ -1,3 +1,31 @@
+// 119. Pascal's Triangle II
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getRow(int rowIndex, int* returnSize) {
+    int i, j;
+    int *buf = calloc(rowIndex + 1, sizeof(int));
+
+    buf[0] = buf[1] = 1;
+    for (i = 2; i <= rowIndex; i++) {
+        // make each row
+        buf[i] = 1;
+        for (j = i - 1; j > 0; j--) {
+            buf[j] = buf[j] + buf[j - 1];
+        }
+        buf[0] = 1;
+        
+        // print
+        /*for (j = 0; j <= i; j++) {
+            printf("%d ", buf[j]);
+        }
+        printf("\n");*/
+    }
+    *returnSize = rowIndex + 1;
+    return buf;
+}
+
 // 441. Arranging Coins
 int arrangeCoins(int n) {
     double x = n;
