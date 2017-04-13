@@ -1,3 +1,13 @@
+// 441. Arranging Coins
+int arrangeCoins(int n) {
+    double x = n;
+    x = 1 + 8 * x;
+    int i = (sqrt(x) - 1) / 2;
+    //printf("x=%f\n", x);
+    //printf("i=%d\n", i);
+    return i;
+}
+
 // 257. Binary Tree Paths
 /**
  * Definition for a binary tree node.
