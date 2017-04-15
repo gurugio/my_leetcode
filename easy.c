@@ -1,3 +1,30 @@
+// 141. Linked List Cycle
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+bool hasCycle(struct ListNode *head) {
+    struct ListNode *two_step, *one_step;
+    
+    one_step = two_step = head;
+    while (1) {
+        if (!one_step)
+            return false;
+        one_step = one_step->next;
+        if (!two_step)
+            return false;
+        two_step = two_step->next;
+        if (!two_step)
+            return false;
+        two_step = two_step->next;
+        if (one_step == two_step)
+            return true;
+    }
+}
+
 // 232. Implement Queue using Stacks
 struct stack {
 	int count;
