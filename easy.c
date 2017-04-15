@@ -1,3 +1,122 @@
+// 232. Implement Queue using Stacks
+struct stack {
+	int count;
+	int *buf;
+};
+
+struct stack *stack_create(int max)
+{
+	struct stack *s = calloc(1, sizeof(struct stack));
+	s->count = 0;
+	s->buf = calloc(max, sizeof(int));
+	return s;
+}
+
+void stack_free(struct stack *s)
+{
+	free(s->buf);
+	free(s);
+}
+
+void stack_push(struct stack *s, int x)
+{
+	s->buf[s->count++] = x;
+}
+
+int stack_pop(struct stack *s)
+{
+	return s->buf[--s->count];
+}
+
+int stack_peek(struct stack *s)
+{
+	return s->buf[s->count - 1];
+}
+
+void stack_show(struct stack *s)
+{
+	int i;
+	for (i = s->count - 1; i >= 0; i--)
+		printf("%d-", s->buf[i]);
+	printf("\b \n");
+}
+
+int stack_empty(struct stack *s)
+{
+	return s->count == 0;
+}
+
+int stack_size(struct stack *s)
+{
+	return s->count;
+}
+
+void stack_reverse(struct stack *s)
+{
+	int center = s->count / 2;
+	int i;
+	for (i = 0; i < center; i++) {
+		int t = s->buf[i];
+		s->buf[i] = s->buf[s->count - i - 1];
+		s->buf[s->count - i - 1] = t;
+	}
+}
+
+typedef struct {
+       	struct stack *stack;
+} MyQueue;
+
+/** Initialize your data structure here. */
+MyQueue* myQueueCreate(int maxSize) {
+	MyQueue *m;
+	m = calloc(1, sizeof(*m));
+	m->stack = stack_create(maxSize);
+	return m;
+}
+
+/** Push element x to the back of queue. */
+void myQueuePush(MyQueue* obj, int x) {
+	stack_push(obj->stack, x);
+}
+
+/** Removes the element from in front of queue and returns that element. */
+int myQueuePop(MyQueue* obj) {
+	int x;
+	stack_reverse(obj->stack);
+	x = stack_pop(obj->stack);
+	stack_reverse(obj->stack);
+	return x;
+}
+
+/** Get the front element. */
+int myQueuePeek(MyQueue* obj) {
+	int x;
+	stack_reverse(obj->stack);
+	x = stack_peek(obj->stack);
+	stack_reverse(obj->stack);
+	return x;
+}
+
+/** Returns whether the queue is empty. */
+bool myQueueEmpty(MyQueue* obj) {
+	return stack_empty(obj->stack);
+}
+
+void myQueueFree(MyQueue* obj) {
+	stack_free(obj->stack);
+	free(obj);
+}
+
+/**
+ * Your MyQueue struct will be instantiated and called as such:
+ * struct MyQueue* obj = myQueueCreate(maxSize);
+ * myQueuePush(obj, x);
+ * int param_2 = myQueuePop(obj);
+ * int param_3 = myQueuePeek(obj);
+ * bool param_4 = myQueueEmpty(obj);
+ * myQueueFree(obj);
+ */
+
 // 119. Pascal's Triangle II
 /**
  * Return an array of size *returnSize.
