@@ -1,3 +1,20 @@
+// 172. Factorial Trailing Zeroes
+// time-over version
+int trailingZeroes(int n) {
+    int zeros = 0;
+    int i;
+    
+    for (i = 0; i <= n; i += 5) {
+        int t = i;
+        if (i == 0) continue;
+        while ((t % 5) == 0) {
+            zeros++;
+            t /= 5;
+        }
+    }
+    return zeros;
+}
+
 // 9. Palindrome Number
 #if 0
 // my poor version
