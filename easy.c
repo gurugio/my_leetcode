@@ -1,3 +1,53 @@
+// 9. Palindrome Number
+#if 0
+// my poor version
+int digits(int x)
+{
+    int d = 0;
+    int i;
+    for (i = x; i != 0; i /= 10)
+        d++;
+    return d;
+}
+
+int get_digit(int x, int d)
+{
+    int i;
+    for (i = 0; i < d; i++)
+        x /= 10;
+    return x % 10;
+}
+
+bool isPalindrome(int x) {
+    int di = digits(x);
+    int i;
+    int match = 0;
+    if (x < 0) return false;
+    
+    //printf("digits=%d\n", di);
+    for (i = 0; i < di/2; i++) {
+        int h, l;
+        l = get_digit(x, i);
+        h = get_digit(x, di - 1 - i);
+        //printf("%d == %d", h, l);
+        if (l != h) return false;
+    }
+    return true;
+}
+#endif
+// solution version
+bool isPalindrome(int x) {
+    int rev;
+    
+    if ((x < 0) || (x != 0 && (x % 10) == 0))
+        return false;
+    while (x > rev) {
+        rev = rev * 10 + x%10;
+        x /= 10;
+    }
+    return x == rev || x == (rev/10);
+}
+
 // 26. Remove Duplicates from Sorted Array
 int removeDuplicates(int* nums, int numsSize) {
     int cur = 0;
