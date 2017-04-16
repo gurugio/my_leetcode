@@ -1,3 +1,16 @@
+// 26. Remove Duplicates from Sorted Array
+int removeDuplicates(int* nums, int numsSize) {
+    int cur = 0;
+    int i;
+    if (numsSize == 0) return 0;
+    for (i = 1; i < numsSize; i++) {
+        if (nums[cur] != nums[i]) {
+            nums[++cur] = nums[i];
+        }
+    }
+    return cur+1;
+}
+
 // 141. Linked List Cycle
 /**
  * Definition for singly-linked list.
