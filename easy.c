@@ -1,3 +1,51 @@
+// 438. Find All Anagrams in a String
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+void make_counter(char *s, int len, int *counter) {
+    int i = 0;
+    for (i = 0; i < len; i++)
+        counter[s[i] - 'a']++;
+}
+
+bool cmp_counter(int *c1, int *c2) {
+    int i;
+    for (i = 0; i < 'z' - 'a' + 1; i++) {
+        if (c1[i] != c2[i])
+            break;
+    }
+    return i == 'z'-'a'+1;
+}
+
+int* findAnagrams(char* s, char* p, int* returnSize) {
+    int counter['z'-'a'+1] = {0,};
+    int tmp['z'-'a'+1] = {0,};
+    int *ret;
+    int i, index;
+    int plen;
+    int slen;
+    
+    ret = calloc(40960, sizeof(int));
+    index = 0;
+    slen = strlen(s);
+    plen = strlen(p);
+
+    // start at 0
+    make_counter(p, plen, counter);
+    make_counter(s, plen, tmp);
+    if (cmp_counter(counter, tmp)) ret[index++] = 0;
+    // start at 1
+    for (i = 1; i <= slen - plen; i++) {
+        tmp[s[i-1] - 'a']--;
+        tmp[s[i+plen-1] - 'a']++;
+        if (cmp_counter(counter, tmp))
+            ret[index++] = i;
+    }
+    *returnSize = index;
+    return ret;
+}
+
 // 38. Count and Say
 char* countAndSay(int n) {
     int cur;
