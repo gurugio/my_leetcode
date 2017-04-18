@@ -1,3 +1,48 @@
+// 38. Count and Say
+char* countAndSay(int n) {
+    int cur;
+    int count = 0;
+    int s, t;
+    int i;
+    char *buf1, *buf2;
+    char *source, *target;
+    
+    if (n == 0) return NULL;
+    
+    buf1 = calloc(40960, sizeof(char));
+    buf2 = calloc(40960, sizeof(char));
+    source = buf1;
+    target = buf2;
+    
+    source[0] = '1'; // if n==1
+    
+    for (i = 1; i < n; i++) {
+        count = cur = 0;
+        s = t = 0;
+        while (source[s]) {
+            if (source[cur] == source[s])
+                count++;
+            else {
+                target[t++] = count + '0';
+                target[t++] = source[cur];
+                count = 1;
+                cur = s;
+            }
+            s++;
+        }
+        // write the last count
+        target[t++] = count + '0';
+        target[t++] = source[cur];
+        {
+            char *_t = source;
+            source = target;
+            target = _t;
+        }
+    }
+    free(target);
+    return source;
+}
+
 // 172. Factorial Trailing Zeroes
 // time-over version
 int trailingZeroes(int n) {
