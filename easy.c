@@ -1,3 +1,28 @@
+// 205. Isomorphic Strings
+bool isIsomorphic(char* s, char* t) {
+    int len = strlen(s);
+    int i;
+    char s_mapping[256] = {0,};
+    char t_mapping[256] = {0,};
+
+    for (i = 0; i < len; i++) {
+        if (s_mapping[s[i]] == 0 && t_mapping[t[i]] == 0) {
+            s_mapping[s[i]] = t[i];
+            t_mapping[t[i]] = s[i];
+            //printf("new mapping %c - %c\n", s[i], t[i]);
+        } else {
+            if (s_mapping[s[i]] == t[i] && t_mapping[t[i]] == s[i]) {
+                //printf("match mapping %c - %c\n", s[i], t[i]);
+                continue;
+            } else {
+                //printf("fail %c - %c\n", s[i], t[i]);
+                break;
+            }
+        }
+    }
+    return i == len;
+}
+
 // 438. Find All Anagrams in a String
 /**
  * Return an array of size *returnSize.
