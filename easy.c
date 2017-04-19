@@ -1,3 +1,20 @@
+// 507. Perfect Number
+bool checkPerfectNumber(int num) {
+    int last = sqrt(num);
+    int i;
+    int sum = 1;
+    
+    if (num == 1) return false;
+    
+    for (i = 2; i <= last; i++) {
+        if (0 == (num % i)) {
+            sum += (i + (num / i));
+            //printf("%d %d\n", i, num/i);
+        }
+    }
+    return sum == num;
+}
+
 // 111. Minimum Depth of Binary Tree
 void traverse(struct TreeNode *root, int cur_depth, int *min_depth) {
     if (root->left == NULL && root->right == NULL && cur_depth < *min_depth) {
