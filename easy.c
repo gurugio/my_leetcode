@@ -1,3 +1,20 @@
+// 111. Minimum Depth of Binary Tree
+void traverse(struct TreeNode *root, int cur_depth, int *min_depth) {
+    if (root->left == NULL && root->right == NULL && cur_depth < *min_depth) {
+        *min_depth = cur_depth;
+        return;
+    }
+    if (root->left) traverse(root->left, cur_depth+1, min_depth);
+    if (root->right) traverse(root->right, cur_depth+1, min_depth);
+}
+
+int minDepth(struct TreeNode* root) {
+    int min = 0xffffff;
+    if (!root) return 0;
+    traverse(root, 1, &min);
+    return min;
+}
+
 // 20. Valid Parentheses
 bool isValid(char* s) {
     int i;
