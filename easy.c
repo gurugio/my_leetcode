@@ -1,3 +1,36 @@
+// 20. Valid Parentheses
+bool isValid(char* s) {
+    int i;
+    char *stack;
+    int index = 0;
+    
+    stack = calloc(strlen(s), sizeof(char));
+    for (i = 0; s[i] != '\0'; i++) {
+        switch (s[i]) {
+            case '(':
+            case '[':
+            case '{':
+                stack[index++] = s[i];
+                break;
+            case ')':
+                if (stack[--index] != '(')
+                    goto out;
+                break;
+            case ']':
+                if (stack[--index] != '[')
+                    goto out;
+                break;
+            case '}':
+                if (stack[--index] != '{')
+                    goto out;
+                break;
+        }
+    }
+    free(stack);
+out:
+    return s[i] == '\0' && index == 0;
+}
+
 // 205. Isomorphic Strings
 bool isIsomorphic(char* s, char* t) {
     int len = strlen(s);
