@@ -1,3 +1,47 @@
+// 290. Word Pattern
+bool wordPattern(char* pattern, char* str) {
+    char *pattern_table[26] = {NULL,};
+    int s, t;
+    char *del = " ";
+    int ch;
+    char *ptr;
+    
+    s = t = 0;
+    
+    if (pattern[0] == '\0') return false;
+    
+    // the first tokenizing needs str
+    ch = pattern[s++] - 'a';
+    pattern_table[ch] = strtok(str, del);
+    //printf("add map:%c - %s\n", ch + 'a', pattern_table[ch]);
+    while (pattern[s]) {
+        int i;
+        ch = pattern[s] - 'a';
+        ptr = strtok(NULL, del);
+        if (!ptr) break;
+        
+        if (pattern_table[ch] == NULL) {
+            for (i = 0; i < 26; i++) {
+                if (pattern_table[i] && strcmp(pattern_table[i], ptr) == 0) {
+                    //printf("dup map:%c %s\n", i+'a', pattern_table[i]);
+                    goto duplicated;
+                }
+            }
+            pattern_table[ch] = ptr;
+                //printf("add map:%c - %s\n", ch + 'a', pattern_table[ch]);
+        } else {
+            if (strcmp(pattern_table[ch], ptr)) {
+                    //printf("mismatch map:%c - %s\n", ch + 'a', ptr);
+                break;
+            }
+                //printf("match map:%c - %s\n", ch + 'a', pattern_table[ch]);
+        }
+        s++;
+    }
+duplicated:
+    return pattern[s] == '\0' && strtok(NULL, del) == NULL;
+}
+
 // 507. Perfect Number
 bool checkPerfectNumber(int num) {
     int last = sqrt(num);
