@@ -1,3 +1,77 @@
+// 1. Two Sum
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+struct hashnode {
+	int key;
+	int val;
+};
+
+struct hashmap {
+	size_t size;
+	struct hashnode **storage;
+};
+
+struct hashmap *hash_create(int size)
+{
+	struct hashmap *ret = calloc(1, sizeof(*ret));
+	ret->size = size;
+	ret->storage = calloc(size, sizeof(struct hashnode *));
+	return ret;
+}
+
+void hash_destroy(struct hashmap *map)
+{
+	free(map->storage);
+	free(map);
+}
+
+void hash_set(struct hashmap *map, int key, int val)
+{
+	int index = abs(key) % map->size;
+	struct hashnode *node;
+	
+	while (map->storage[index]) {
+		index++;
+	}
+	node = calloc(1, sizeof(struct hashnode));
+	node->key = key;
+	node->val = val;
+	map->storage[index] = node;
+	//printf("hash-set[%d]: %d->%d\n", index, key, val);
+}
+
+struct hashnode *hash_get(struct hashmap *map, int key)
+{
+	int index = abs(key) % map->size;
+	while (map->storage[index] && map->storage[index]->key != key)
+	    index++;
+	//printf("hash-get[%d]: %d->%p\n", index, key, map->storage[index]);
+	return map->storage[index];
+}
+
+int* twoSum(int* nums, int numsSize, int target) {
+    int i,j;
+    int *ret;
+    int remain;
+    struct hashmap *map = hash_create(numsSize * 2);
+    struct hashnode *node;
+    
+    for (i = 0; i < numsSize; i++) {
+        remain = target - nums[i];
+        node = hash_get(map, nums[i]);
+        if (node) {
+            ret = calloc(2, sizeof(int));
+            ret[0] = node->val, ret[1] = i;
+            hash_destroy(map);
+            return ret;
+        }
+        hash_set(map, remain, i);
+    }
+    hash_destroy(map);
+    return NULL;
+}
+
 // 290. Word Pattern
 bool wordPattern(char* pattern, char* str) {
     char *pattern_table[26] = {NULL,};
