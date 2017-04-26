@@ -1,3 +1,121 @@
+// 225. Implement Stack using Queues
+// queue_peek() does not return the last value in queue.
+// queue_peek() must returns the value that queue_pop() will return.
+struct queue {
+	int *buf;
+	int size;
+	int rear, tail;
+};
+
+struct queue *queue_create(int max)
+{
+	struct queue *q = calloc(1, sizeof(struct queue));
+	q->rear = q->tail = 0;
+	q->size = max;
+	q->buf = calloc(max, sizeof(int));
+	return q;
+}
+
+void queue_free(struct queue *q)
+{
+	free(q->buf);
+	free(q);
+}
+
+void queue_print(struct queue *q)
+{
+	int i;
+	printf("<%d %d>", q->tail, q->rear);
+	for (i = 0; i < q->size; i++)
+		printf("%d ", q->buf[i]);
+	printf("\n");
+}
+
+void queue_push(struct queue *q, int val)
+{
+	q->buf[q->rear] = val;
+	q->rear = (q->rear + 1) % q->size;
+}
+
+int queue_peek(struct queue *q)
+{
+	return q->buf[q->tail];
+}
+
+int queue_pop(struct queue *q)
+{
+	int ret = q->buf[q->tail];
+	q->tail = (q->tail + 1) % q->size;
+	return ret;
+}
+
+int queue_size(struct queue *q)
+{
+	return q->rear - q->tail;
+}
+
+bool queue_empty(struct queue *q)
+{
+	return q->tail == q->rear;
+}
+
+typedef struct {
+	struct queue *q;
+	int *buf;
+	int size;
+} MyStack;
+
+MyStack* myStackCreate(int maxSize) {
+	MyStack *stack = calloc(1, sizeof(MyStack));
+	stack->q = queue_create(maxSize);
+	stack->buf = calloc(maxSize, sizeof(int));
+	stack->size = maxSize;
+	return stack;
+}
+
+/** Push element x onto stack. */
+void myStackPush(MyStack* obj, int x) {
+	queue_push(obj->q, x);
+}
+
+/** Removes the element on top of the stack and returns that element. */
+int myStackPop(MyStack* obj) {
+	int index = 0;
+	int i;
+	int ret;
+
+	while (!queue_empty(obj->q))
+		obj->buf[index++] = queue_pop(obj->q);
+	ret = obj->buf[--index];
+	for (i = 0; i < index; i++)
+		queue_push(obj->q, obj->buf[i]);
+	return ret;
+}
+
+/** Get the top element. */
+int myStackTop(MyStack* obj) {
+    int index = 0;
+	int i;
+	int ret;
+
+	while (!queue_empty(obj->q))
+		obj->buf[index++] = queue_pop(obj->q);
+	ret = obj->buf[index - 1];
+	for (i = 0; i < index; i++)
+		queue_push(obj->q, obj->buf[i]);
+	return ret;
+}
+
+/** Returns whether the stack is empty. */
+bool myStackEmpty(MyStack* obj) {
+	return queue_empty(obj->q);
+}
+
+void myStackFree(MyStack* obj) {
+	queue_free(obj->q);
+	free(obj);
+}
+
 // 234. Palindrome Linked List
 struct ListNode *reverse(struct ListNode *head) {
 	struct ListNode *prev = NULL;
