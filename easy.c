@@ -1,3 +1,49 @@
+// 234. Palindrome Linked List
+struct ListNode *reverse(struct ListNode *head) {
+	struct ListNode *prev = NULL;
+	struct ListNode *next = NULL;
+	
+	while (head) {
+	    //printf("head-%p %d\n", head, head->val);
+		next = head->next;
+		head->next = prev;
+		prev = head;
+		head = next;
+	}
+	//printf("prev-%p %d\n", prev, prev->val);
+	return prev;
+}
+
+bool isPalindrome(struct ListNode* head) {
+	struct ListNode *slow, *fast;
+	struct ListNode *last, *prev;;
+
+	if (!head) return true;
+    
+	slow = fast = head;
+	while (fast->next && fast->next->next) {
+		//printf("slow-%p %d\n", slow, slow->val);
+		fast = fast->next->next;
+		slow = slow->next;
+	}
+	if (fast->next) {
+		//printf("slow-%p %d\n", slow, slow->val);
+		slow = slow->next;
+	}
+
+	//printf("middle-%p %d\n", slow, slow->val);
+	last = reverse(slow);
+
+	while (last) {
+		//printf("cmp: %d %d\n", head->val, last->val);
+		if (head->val != last->val)
+			return false;
+		last = last->next;
+		head = head->next;
+	}
+	return true;
+}
+
 // 1. Two Sum
 /**
  * Note: The returned array must be malloced, assume caller calls free().
