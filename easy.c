@@ -1,3 +1,42 @@
+// 203. Remove Linked List Elements
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* removeElements(struct ListNode* head, int val) {
+    struct ListNode *prev = NULL;
+    struct ListNode *cur = head;
+    
+    while (head && head->val == val) {
+        head = head->next; // remove the first node
+    }
+    
+    cur = head;
+    while (cur) {
+        //printf("cur-%d\n", cur->val);
+        if (cur->val == val) {
+            struct ListNode *next = cur->next;
+            if (next) {
+                //printf("change cur-%d\n", next->val);
+                cur->val = next->val;
+                cur->next = next->next;
+                // new value can be also removing value
+                // so check cur again
+                continue;
+            } else {
+                // remove the last node
+                prev->next = NULL;
+            }
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    return head;
+}
+
 // 88. Merge Sorted Array
 void merge(int* nums1, int m, int* nums2, int n) {
     int i, j, target;
