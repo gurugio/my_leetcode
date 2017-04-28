@@ -1,3 +1,17 @@
+// 58. Length of Last Word
+int lengthOfLastWord(char* s) {
+    int len = strlen(s);
+    char *p = s + len - 1;
+    while (*p && *p == ' ') {
+        p--;
+        len--;
+    }
+    //printf("%c\n", *p);
+    while (*p && *p != ' ')
+        p--;
+    return len - (p - s) - 1;
+}
+
 // 203. Remove Linked List Elements
 /**
  * Definition for singly-linked list.
