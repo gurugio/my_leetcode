@@ -1,3 +1,28 @@
+// 88. Merge Sorted Array
+void merge(int* nums1, int m, int* nums2, int n) {
+    int i, j, target;
+    int *tmp = calloc(m, sizeof(int));
+    memcpy(tmp, nums1, m * sizeof(int));
+    
+    i = j = 0;
+    target = 0;
+    
+    while (i < m && j < n) {
+        if (tmp[i] < nums2[j]) {
+            nums1[target++] = tmp[i++];
+        } else {
+            nums1[target++] = nums2[j++];
+        }
+    }
+    while (i < m) {
+        nums1[target++] = tmp[i++];
+    }
+    while (j < n) {
+        nums1[target++] = nums2[j++];
+    }
+    free(tmp);
+}
+
 // 225. Implement Stack using Queues
 // queue_peek() does not return the last value in queue.
 // queue_peek() must returns the value that queue_pop() will return.
