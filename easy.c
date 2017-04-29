@@ -1,3 +1,61 @@
+// 67. Add Binary
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+char* addBinary(char* a, char* b) {
+    int i, j;
+    int carry;
+    char *result;
+    int index;
+    int val_a, val_b;
+    
+    i = strlen(a) - 1; // last character
+    j = strlen(b) - 1; // last character 
+    index = 0;
+    result = calloc(MAX(i, j) + 3 /* one more digit + null */, sizeof(char));
+    
+    carry = 0;
+    while (i >= 0 || j >= 0) {
+        if (i >= 0)
+            val_a = a[i];
+        else
+            val_a = '0';
+
+        if (j >= 0)
+            val_b = b[j];
+        else
+            val_b = '0';
+        //printf("%x + %x + %d\n", val_a, val_b, carry);
+        
+        if (val_a == '1' && val_b == '1') {
+            result[index] = '0' + carry;
+            carry = 1;
+        } else if ((val_a == '1' && val_b == '0') ||
+                    (val_a == '0' && val_b == '1')) {
+            if (carry == 0) {
+                result[index] = '1';
+                carry = 0;
+            } else {
+                result[index] = '0';
+                carry = 1;
+            }
+        } else if (val_a == '0' && val_b == '0') {
+            result[index] = '0' + carry;
+            carry = 0;
+        }
+        //printf("s=%x c=%d\n", result[index], carry);
+        i--, j--, index++;
+    }
+
+    if (carry == 1)
+        result[index++] = '1';
+    for (i = 0; i < index/2; i++) {
+        char _t = result[i];
+        result[i] = result[index - i - 1];
+        result[index - i - 1] = _t;
+    }
+    result[index] = '\0';
+    return result;
+}
+
 // 58. Length of Last Word
 int lengthOfLastWord(char* s) {
     int len = strlen(s);
