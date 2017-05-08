@@ -1,3 +1,41 @@
+// 14. Longest Common Prefix
+char* longestCommonPrefix(char** strs, int strsSize) {
+    int common_len;
+    int i;
+    char *ret;
+    int last;
+
+    if (strsSize == 0)
+        common_len = 0;
+    else {
+        last = strsSize - 1;
+        common_len = strlen(strs[last]);
+    }
+    
+    for (i = 0; i < strsSize - 1; i++) {
+        char *s, *t;
+        
+        s = strs[last];
+        t = strs[i];
+
+        if (*s == '\0' || *t == '\0') {
+            common_len = 0;
+            break;
+        }
+        while (!(*s - *t) && (s - strs[last]) < common_len)
+            s++, t++;
+        //printf("common-%d\n", s - strs[last]);
+        if (common_len > (s - strs[last]))
+            common_len = s - strs[last];
+    }
+end:
+    //printf("finalcommon-%d\n", common_len);
+    
+    ret = calloc(common_len + 1, sizeof(char));
+    strncpy(ret, strs[0], common_len);
+    return ret;
+}
+
 // 67. Add Binary
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 char* addBinary(char* a, char* b) {
