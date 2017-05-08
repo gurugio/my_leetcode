@@ -1,3 +1,38 @@
+// 160. Intersection of Two Linked Lists
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB) {
+    struct ListNode *node_a = headA;
+    struct ListNode *node_b = headB;
+    
+    if (headA == headB) return headA;
+
+    while (node_a) {
+        struct ListNode *n = node_a->next;
+        node_a->next = (unsigned long)(node_a->next) | 0x1;
+        if (node_a->next == 0x1)
+            break;
+        node_a = n;
+    }
+
+    while (node_b) {
+        if ((unsigned long)(node_b->next) & 0x1)
+            break;
+        node_b = node_b->next;
+    }
+    node_a = headA;
+    while (node_a) {
+        node_a->next = (unsigned long)(node_a->next) & ~0x1;
+        node_a = node_a->next;
+    }
+    return node_b;
+}
+
 // 14. Longest Common Prefix
 char* longestCommonPrefix(char** strs, int strsSize) {
     int common_len;
