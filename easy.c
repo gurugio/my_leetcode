@@ -1,3 +1,29 @@
+// 400. Nth Digit
+// This took 2 hours...
+int findNthDigit(int n) {
+    uint32_t digit = 2; // from 2 digit
+    uint32_t count = 90;
+    char string[36];
+    
+    digit = 1; // from 2-digit: 10 11 12
+    count = 9;
+    while (n > digit * count) {
+        n -= digit * count;
+        digit++;
+        count *= 10;
+    }
+    
+    //printf("n-%d digit-%d count-%d\n", n, digit, count);
+    
+    n--;
+    //printf("num-%d\n", (int)pow(10, digit - 1) + n / digit);
+    //printf("digit-%d\n", n % digit);
+    sprintf(string, "%d\n", (int)pow(10, digit - 1) + n / digit);
+    //printf("char-%c\n", string[n % digit]);
+    
+    return string[n % digit] - 0x30;
+}
+
 // 160. Intersection of Two Linked Lists
 /**
  * Definition for singly-linked list.
