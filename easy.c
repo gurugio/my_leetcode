@@ -1,3 +1,42 @@
+// 581. Shortest Unsorted Continuous Subarray
+int findUnsortedSubarray(int* nums, int numsSize) {
+	int start, end;
+
+	for (start = 0; start < numsSize - 1; start++) {
+		if (nums[start] <= nums[start + 1])
+			continue;
+		break;
+	}
+
+	for (end = numsSize - 1; end > start; end--) {
+		if (nums[end] >= nums[end - 1])
+			continue;
+		break;
+	}
+
+	if (start < end) {
+		int i;
+		int max = 0x80000000, min = 0x7fffffff;
+
+		for (i = start; i <= end; i++) {
+			if (nums[i] > max)
+				max = nums[i];
+			if (nums[i] < min)
+				min = nums[i];
+		}
+		for (i = end + 1; i < numsSize; i++) {
+			if (nums[i] < max)
+				end++;
+		}
+		for (i = start - 1; i >= 0; i--) {
+			if (nums[i] > min)
+				start--;
+		}
+		return end - start + 1;
+	} else
+		return 0;
+}
+
 // 400. Nth Digit
 // This took 2 hours...
 int findNthDigit(int n) {
