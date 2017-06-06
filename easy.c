@@ -1,3 +1,45 @@
+// 303. Range Sum Query - Immutable
+// refer: https://discuss.leetcode.com/topic/29194/java-simple-o-n-init-and-o-1-query-solution
+typedef struct {
+    int *nums;
+    int size;
+} NumArray;
+
+NumArray* numArrayCreate(int* nums, int numsSize) {
+    int i;
+    
+    if (numsSize <= 0 || !nums)
+        return NULL;
+    NumArray *ar = calloc(1, sizeof(*ar));
+    ar->nums = calloc(numsSize, sizeof(int));
+
+    ar->nums[0] = nums[0];
+    for (i = 1; i < numsSize; i++) {
+        ar->nums[i] = ar->nums[i - 1] + nums[i];
+    }
+
+    ar->size = numsSize;
+    return ar;
+}
+
+int numArraySumRange(NumArray* obj, int i, int j) {
+    return obj->nums[j] - obj->nums[i - 1];
+}
+
+void numArrayFree(NumArray* obj) {
+    if (obj) {
+        free(obj->nums);
+        free(obj);
+    }
+}
+
+/**
+ * Your NumArray struct will be instantiated and called as such:
+ * struct NumArray* obj = numArrayCreate(nums, numsSize);
+ * int param_1 = numArraySumRange(obj, i, j);
+ * numArrayFree(obj);
+ */
+
 // 581. Shortest Unsorted Continuous Subarray
 int findUnsortedSubarray(int* nums, int numsSize) {
 	int start, end;
