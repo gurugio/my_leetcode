@@ -1,3 +1,73 @@
+// 155. Min Stack
+typedef struct {
+    int *nums;
+    int top;
+    int size;
+    int min;
+} MinStack;
+
+/** initialize your data structure here. */
+MinStack* minStackCreate(int maxSize) {
+    if (!maxSize) return NULL;
+    MinStack *stack = calloc(1, sizeof(*stack));
+    stack->nums = calloc(maxSize, sizeof(int));
+    stack->top = -1;
+    stack->size = maxSize;
+    stack->min = -1;
+    return stack;
+}
+
+void minStackPush(MinStack* obj, int x) {
+    int min;
+    obj->nums[++obj->top] = x;
+    if (obj->min < 0) // first min
+        obj->min = obj->top;
+    else {
+        if (obj->nums[obj->min] > obj->nums[obj->top])
+            obj->min = obj->top;
+    }
+}
+
+void minStackPop(MinStack* obj) {
+    if (obj->top >= 0)
+        obj->top--;
+    if (obj->top < 0)
+        obj->min = -1;
+    else if (obj->top < obj->min) {
+        int i;
+        obj->min = 0;
+        for (i = 1; i <= obj->top; i++) {
+            if (obj->nums[obj->min] > obj->nums[i])
+                obj->min = i;
+        }
+    }
+}
+
+int minStackTop(MinStack* obj) {
+    return obj->nums[obj->top];
+}
+
+int minStackGetMin(MinStack* obj) {
+    return obj->nums[obj->min];
+}
+
+void minStackFree(MinStack* obj) {
+    if (obj) {
+        free(obj->nums);
+        free(obj);
+    }
+}
+
+/**
+ * Your MinStack struct will be instantiated and called as such:
+ * struct MinStack* obj = minStackCreate(maxSize);
+ * minStackPush(obj, x);
+ * minStackPop(obj);
+ * int param_3 = minStackTop(obj);
+ * int param_4 = minStackGetMin(obj);
+ * minStackFree(obj);
+ */
+
 // 303. Range Sum Query - Immutable
 // refer: https://discuss.leetcode.com/topic/29194/java-simple-o-n-init-and-o-1-query-solution
 typedef struct {
