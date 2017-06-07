@@ -1,3 +1,33 @@
+// 7. Reverse Integer
+int reverse(int x) {
+    int negative;
+    unsigned int abs_x;
+    unsigned int ret;
+    
+    abs_x = x;
+    negative = 0;
+    if (x < 0) {
+        abs_x = -x;
+        negative = 1;
+    }
+        
+    ret = 0;
+    while (abs_x > 0) {
+        ret = ret * 10 + abs_x % 10;
+        abs_x /= 10;
+        printf("%d %d\n", abs_x, ret);
+        if (ret > (0x7fffffff/10) && (abs_x != 0)) {
+            ret = 0;
+            break;
+        }
+    }
+    if (ret > 0x7fffffff) ret = 0;
+    
+    if (negative)
+        ret = -ret;
+    return (int)ret;    
+}
+
 // 155. Min Stack
 typedef struct {
     int *nums;
