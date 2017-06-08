@@ -1,3 +1,12 @@
+// 189. Rotate Array
+void rotate(int* nums, int numsSize, int k) {
+	int copy[numsSize];
+	memcpy(copy, nums, numsSize * sizeof(int));
+	if (k > numsSize) k %= numsSize;
+	memcpy(&nums[0], &copy[numsSize-k], k * sizeof(int));
+	memcpy(&nums[k], &copy[0], (numsSize - k) * sizeof(int));
+}
+
 // 7. Reverse Integer
 int reverse(int x) {
     int negative;
