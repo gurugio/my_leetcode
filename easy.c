@@ -1,3 +1,38 @@
+// 414. Third Maximum Number
+int thirdMax(int* nums, int numsSize) {
+	int three[3] = {0x80000000, 0x80000000, 0x80000000};
+	int valid[3] = {0,0,0};
+	int i, j;
+	int n;
+	int force = 0;
+	
+	for (j = 0; j < numsSize; j++) {
+		n = nums[j];
+		if (n == 0x80000000)
+			force = 1;
+
+		for (i = 0; i < 3; i++) {
+			if (n > three[i]) {
+				int t = three[i];
+				three[i] = n;
+				n = t;
+				valid[i] = 1;
+			} else 	if (n == three[i]) {
+				// original-n = 0x80000000
+				if (force && valid[i] == 0)
+					valid[i] = 1;
+				break;
+			}
+		}
+	}
+
+	//printf("%d %d %d\n", three[0], three[1], three[2]);
+	//printf("%d %d %d\n", valid[0], valid[1], valid[2]);
+	if (valid[2])
+		return three[2];
+	return three[0];
+}
+
 // 189. Rotate Array
 void rotate(int* nums, int numsSize, int k) {
 	int copy[numsSize];
