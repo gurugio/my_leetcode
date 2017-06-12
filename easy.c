@@ -1,3 +1,27 @@
+// 168. Excel Sheet Column Title
+char* convertToTitle(int n) {
+	char *str = calloc(128, sizeof(char));
+	int i = 0, j;
+
+	if (n <= 26) {
+		str[i] = 'A' + ((n - 1) % 26);
+		return str;
+	}
+	
+	while (n > 0) {
+		n--;
+		str[i++] = 'A' + (n % 26);
+		n /= 26;
+	};
+
+	for (j = 0; j < i/2; j++) {
+		char t = str[j];
+		str[j] = str[i - j - 1];
+		str[i - j - 1] = t;
+	}
+	return str;
+}
+
 // 278. First Bad Version
 // Forward declaration of isBadVersion API.
 bool isBadVersion(int version);
