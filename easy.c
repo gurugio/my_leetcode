@@ -1,3 +1,28 @@
+// 278. First Bad Version
+// Forward declaration of isBadVersion API.
+bool isBadVersion(int version);
+
+int firstBadVersion(int n) {
+	int begin, end;
+	int middle;
+
+	// always status[begin] == GOOD && status[END] == BAD
+	begin = 1, end = n;
+	while (1) {
+		middle = (end>>1) + (begin>>1);
+		//printf("%d %d %d\n", begin, middle, end);
+		if (isBadVersion(middle))
+			end = middle;
+		else
+			begin = middle + 1;
+		if (end == begin)
+			break;
+	}
+
+	//printf("%d %d %d\n", begin, middle, end);
+	return begin;
+}
+
 // 414. Third Maximum Number
 int thirdMax(int* nums, int numsSize) {
 	int three[3] = {0x80000000, 0x80000000, 0x80000000};
