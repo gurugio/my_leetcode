@@ -1,3 +1,29 @@
+// 617. Merge Two Binary Trees
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+#define GET_VAL(t) ((t) ? (t)->val : 0)
+#define GET_LEFT(t) ((t) ? (t)->left : NULL)
+#define GET_RIGHT(t) ((t) ? (t)->right : NULL)
+
+struct TreeNode* mergeTrees(struct TreeNode* t1, struct TreeNode* t2) {
+    struct TreeNode *new_root;
+       
+    if (!t1 && !t2) return NULL;
+    
+    new_root = calloc(1, sizeof(*new_root));
+    new_root->val = GET_VAL(t1) + GET_VAL(t2);
+    new_root->left = mergeTrees(GET_LEFT(t1), GET_LEFT(t2));
+    new_root->right = mergeTrees(GET_RIGHT(t1), GET_RIGHT(t2));
+
+    return new_root;
+}
+
 // 125. Valid Palindrome
 bool isPalindrome(char* s) {
 	int size = strlen(s);
