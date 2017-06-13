@@ -1,3 +1,28 @@
+// 125. Valid Palindrome
+bool isPalindrome(char* s) {
+	int size = strlen(s);
+	int i, j;
+
+	i = 0, j = size - 1;
+	while (i < j) {
+		if (!isalnum(s[i])) {
+			i++;
+			continue;
+		}
+		if (!isalnum(s[j])) {
+			j--;
+			continue;
+		}
+		if (tolower(s[i]) == tolower(s[j])) {
+			i++, j--;
+			continue;
+		} else
+			return 0;
+	}
+
+	return 1;
+}
+
 // 168. Excel Sheet Column Title
 char* convertToTitle(int n) {
 	char *str = calloc(128, sizeof(char));
