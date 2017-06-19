@@ -1,3 +1,33 @@
+//557. Reverse Words in a String III
+void reverseone(char *s, int len)
+{
+	int i;
+	for (i = 0; i < len/2; i++) {
+		char t = s[i];
+		s[i] = s[len - i - 1];
+		s[len - i - 1] = t;
+	}
+}
+
+char* reverseWords(char* s) {
+	char *start = s;
+	char *end = start;
+	int len;
+    
+	while (*start) {
+		while (*end && *end != ' ')
+			end++;
+
+		len = end - start;
+
+		reverseone(start, len);
+		if (!(*end))
+			break;
+		start = ++end;
+	}
+	return s;
+}
+
 // 617. Merge Two Binary Trees
 /**
  * Definition for a binary tree node.
