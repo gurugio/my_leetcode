@@ -1,3 +1,71 @@
+// 500. Keyboard Row
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int keyboard_map[3][26] = {
+	/* a b c d e f g h i j k l m n o p q r s t u v w x y z */
+	{  0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,1,0,1,0,1,0}, // qwertyuiop
+	{  1,0,0,1,0,1,1,1,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0}, // asdfghjkl
+	{  0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,1,0,1}  // zxcvbnm
+};
+
+void make_map(char *word, int *map)
+{
+	int len = strlen(word);
+	int i;
+
+	for (i = 0; i < len; i++) {
+		map[tolower(word[i]) - 'a'] = 1;
+	}
+}
+
+int map_cmp(int *superset, int *subset)
+{
+	for (int i = 0; i < 26; i++) {
+		if (subset[i] && !superset[i])
+			return 0;
+	}
+	return 1;
+}
+	
+char** findWords(char** words, int wordsSize, int* returnSize) {
+	int i;
+	int map[26] = {0,};
+	int *ret_array;
+	int ret_index;
+	char **ret_strings;
+
+	if (0 == wordsSize)
+		return NULL;
+
+	ret_array = calloc(wordsSize, sizeof(int));
+	ret_index = 0;
+
+	for (i = 0; i < wordsSize; i++) {
+		memset(map, 0, 26 * sizeof(int));
+		make_map(words[i], map);
+		if (map_cmp(keyboard_map[0], map) ||
+		    map_cmp(keyboard_map[1], map) ||
+		    map_cmp(keyboard_map[2], map)) {
+			ret_array[ret_index++] = i;
+			//printf("match:%d\n", i);
+		}
+	}
+
+	if (0 != ret_index) {
+		ret_strings = calloc(ret_index, sizeof(char *));
+		for (i = 0; i < ret_index; i++) {
+			//printf("strcpy:%s\n", words[ret_array[i]]);
+			ret_strings[i] = calloc(strlen(words[ret_array[i]]),
+					     sizeof(char) + 1);
+			strcpy(ret_strings[i], words[ret_array[i]]);
+		}
+	}
+	*returnSize = ret_index;
+	return ret_strings;
+}
+
 //557. Reverse Words in a String III
 void reverseone(char *s, int len)
 {
