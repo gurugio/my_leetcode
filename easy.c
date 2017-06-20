@@ -1,3 +1,19 @@
+// 561. Array Partition I
+static int cmpint(const void *a, const void *b)
+{
+    return *(int *)a - *(int *)b;
+}
+
+int arrayPairSum(int* nums, int numsSize) {
+    int i, sum;
+    qsort(nums, numsSize, sizeof(int), cmpint);
+    sum = 0;
+    for (i = 0; i < numsSize; i += 2) {
+        sum += nums[i];
+    }
+    return sum;
+}
+
 // 500. Keyboard Row
 /**
  * Return an array of size *returnSize.
