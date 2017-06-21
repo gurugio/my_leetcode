@@ -1,3 +1,21 @@
+// 575. Distribute Candies
+int cmpnum(const void *a, const void *b)
+{
+    return *(int *)a - *(int *)b;
+}
+
+int distributeCandies(int* candies, int candiesSize) {
+    int unique;
+    int i;
+    qsort(candies, candiesSize, sizeof(int), cmpnum);
+    unique = 1;
+    for (i = 1; i < candiesSize; i++) {
+        if (candies[i] != candies[i - 1])
+            unique++;
+    }
+    return unique < (candiesSize / 2) ? unique : (candiesSize/2);
+}
+
 // 566. Reshape the Matrix
 /**
  * Return an array of arrays of size *returnSize.
