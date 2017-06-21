@@ -1,3 +1,51 @@
+// 566. Reshape the Matrix
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** matrixReshape(int** nums, int numsRowSize, int numsColSize, int r, int c, int** columnSizes, int* returnSize) {
+	int **ret;
+	int *cols;
+	int i;
+	int *tmp;
+	int tmp_offset;
+
+	if (numsRowSize * numsColSize != r * c) {
+		ret = nums;
+		r = numsRowSize;
+		c = numsColSize;
+		goto return_num;
+	}
+
+    // make 1-dimension array
+	tmp = calloc(numsRowSize * numsColSize, sizeof(int));
+	tmp_offset = 0;
+	for (i = 0; i < numsRowSize; i++) {
+		memcpy(&tmp[tmp_offset], nums[i], numsColSize * sizeof(int));
+		tmp_offset += numsColSize;
+	}
+
+	ret = calloc(r, sizeof(int *));
+	for (i = 0; i < r; i++) {
+		ret[i] = calloc(c, sizeof(int));
+	}
+
+	tmp_offset = 0;
+	for (i = 0; i < r; i++) {
+		memcpy(ret[i], &tmp[tmp_offset], c * sizeof(int));
+		tmp_offset += c;
+	}
+return_num:
+	cols = calloc(r, sizeof(int));
+	for (i = 0; i < r; i++)
+		cols[i] = c;
+		      
+	*columnSizes = cols;
+	*returnSize = r;
+	return ret;
+}
+
 // 561. Array Partition I
 static int cmpint(const void *a, const void *b)
 {
