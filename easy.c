@@ -1,3 +1,81 @@
+// 496. Next Greater Element I
+struct hash_table {
+	int size;
+	int *key_array;
+	int *val_array;
+};
+
+struct hash_table *hash_make(int *nums, int num_size)
+{
+	struct hash_table *hash;
+	int i;
+
+	hash = calloc(1, sizeof(*hash));
+	hash->size = num_size;
+	hash->key_array = calloc(hash->size, sizeof(int));
+	hash->val_array = calloc(hash->size, sizeof(int));
+	// if val is -1, it is free node
+	for (i = 0; i < hash->size; i++)
+		hash->val_array[i] = -1;
+	return hash;
+}
+
+void hash_add(struct hash_table *hash, int key, int val)
+{
+	int hash_index = key % hash->size;
+
+	while (hash->val_array[hash_index] != -1) {
+		hash_index = (hash_index + 1) % hash->size;
+	}
+	hash->key_array[hash_index] = key;
+	hash->val_array[hash_index] = val;
+}
+
+int hash_get(struct hash_table *hash, int key)
+{
+	int hash_index = key % hash->size;
+
+	while (hash->key_array[hash_index] != key) {
+		hash_index = (hash_index + 1) % hash->size;
+	}
+	return hash->val_array[hash_index];
+}
+
+void hash_free(struct hash_table *hash)
+{
+	free(hash->key_array);
+	free(hash->val_array);
+	free(hash);
+}	
+
+int* nextGreaterElement(int* findNums, int findNumsSize, int* nums, int numsSize, int* returnSize) {
+	struct hash_table *hash = hash_make(nums, numsSize * 2);
+	int i, j;
+	int num_index;
+	int *ret;
+
+	for (i = 0; i < numsSize; i++) {
+		hash_add(hash, nums[i], i);
+	}
+
+	ret = calloc(findNumsSize, sizeof(int));
+	for (i = 0; i < findNumsSize; i++) {
+		int index;
+		ret[i] = -1;
+		index = hash_get(hash, findNums[i]);
+		for (j = index + 1; j < numsSize; j++) {
+			if (nums[j] > findNums[i]) {
+				ret[i] = nums[j];
+				break;
+			}
+		}
+	}
+	
+	hash_free(hash);
+	*returnSize = findNumsSize;
+	return ret;
+}
+
 // 575. Distribute Candies
 int cmpnum(const void *a, const void *b)
 {
