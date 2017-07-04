@@ -1,3 +1,30 @@
+// 520. Detect Capital
+bool detectCapitalUse(char* word) {
+    int i;
+	int type;
+	int len = strlen(word);
+
+	if (!word[0] || !word[1])
+		return true;
+	if (isupper(word[0]) && isupper(word[1]))
+		type = 1;
+	else if (isupper(word[0]) && islower(word[1]))
+		type = 2;
+	else if (islower(word[0]) && islower(word[1]))
+		type = 3;
+	else
+		return false;
+
+	for (i = 2; i < len; i++) {
+		if (type == 1 && isupper(word[i]))
+			continue;
+		else if ((type == 2 || type == 3) && islower(word[i]))
+			continue;
+		return false;
+	}
+	return true;
+}
+
 // 496. Next Greater Element I
 struct hash_table {
 	int size;
