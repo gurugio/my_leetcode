@@ -1,3 +1,28 @@
+// 538. Convert BST to Greater Tree
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+int traverse(struct TreeNode *root, int sum)
+{
+    int keysum;
+    
+    if (!root)
+        return sum;
+    
+    root->val += traverse(root->right, sum);
+    return traverse(root->left, root->val);
+}
+
+struct TreeNode* convertBST(struct TreeNode* root) {
+    traverse(root, 0);
+    return root;
+}
+
 // 520. Detect Capital
 bool detectCapitalUse(char* word) {
     int i;
