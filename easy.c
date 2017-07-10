@@ -1,3 +1,47 @@
+// 606. Construct String from Binary Tree
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+char *__tree2str(struct TreeNode *t, char *buf)
+{
+	char *p = buf;
+
+	buf += sprintf(buf, "%d", t->val);
+
+	if (!t->left && !t->right) {
+		return p;
+	} else if (t->right) {
+		if (t->left) {
+			buf += sprintf(buf, "%c", '(');
+			buf += sprintf(buf, "%s", __tree2str(t->left, buf));
+			buf += sprintf(buf, "%c", ')');
+		} else {
+			buf += sprintf(buf, "%s", "()");
+		}
+		buf += sprintf(buf, "%c", '(');
+		buf += sprintf(buf, "%s", __tree2str(t->right, buf));
+		buf += sprintf(buf, "%c", ')');
+	} else if (t->left && !t->right) {
+		buf += sprintf(buf, "%c", '(');
+		buf += sprintf(buf, "%s", __tree2str(t->left, buf));
+		buf += sprintf(buf, "%c", ')');
+	}
+	return p;
+}
+
+char* tree2str(struct TreeNode* t)
+{
+	char *buf = calloc(40960, sizeof(char));
+    if (t) 
+	    __tree2str(t, buf);
+	return buf;
+}
+
 // 538. Convert BST to Greater Tree
 /**
  * Definition for a binary tree node.
