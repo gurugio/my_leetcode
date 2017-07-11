@@ -1,3 +1,22 @@
+// 598. Range Addition II
+int maxCount(int m, int n, int** ops, int opsRowSize, int opsColSize) {
+    	int i,j;
+	int *tmp;
+	int row = 0xfffffff, col = 0xfffffff;
+	
+    if (opsRowSize == 0 || opsColSize == 0)
+        return m*n;
+	for (i = 0; i < opsRowSize; i++) {
+		tmp = ops[i];
+		//printf("ops=[%d %d]\n", tmp[0], tmp[1]);
+		if (tmp[0] > 0 && tmp[0] < row)
+			row = tmp[0];
+		if (tmp[1] > 0 && tmp[1] < col)
+			col = tmp[1];
+	}
+	return row * col;
+}
+
 //258. Add Digits
 int addDigits(int num) {
 	int sum;
