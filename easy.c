@@ -1,3 +1,19 @@
+//258. Add Digits
+int addDigits(int num) {
+	int sum;
+
+	sum = 0;
+	do {
+		//printf("sum=%d\n", sum);
+		sum += (num % 10);
+		if (sum >= 10) {
+			sum = 1 + (sum % 10);
+		}
+		num /= 10;
+	} while (num > 0);
+	return sum;
+}
+
 // 606. Construct String from Binary Tree
 /**
  * Definition for a binary tree node.
