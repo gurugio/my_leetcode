@@ -1,3 +1,33 @@
+// 599. Minimum Index Sum of Two Lists
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** findRestaurant(char** list1, int list1Size, char** list2, int list2Size, int* returnSize) {
+	int i, j;
+	int min = list1Size + list2Size;
+	int count = 0;
+	char **matches = calloc(list1Size + list2Size, sizeof(char *));
+	
+	for (i = 0; i < list1Size; i++) {
+		for (j = 0; j < list2Size; j++) {
+			if (!strcmp(list1[i], list2[j])) {
+				if ((i + j) < min) {
+					min = i + j;
+					count = 0;
+					matches[count] = list1[i];
+					//printf("new %d %s\n", min, list1[i]);
+				} else if ((i + j) == min) {
+					matches[++count] = list1[i];
+					//printf("%d %d %s\n", count, min, list1[i]);
+				}
+			}
+		}
+	}
+	*returnSize = count + 1;
+	return matches;    
+}
+
 // 598. Range Addition II
 int maxCount(int m, int n, int** ops, int opsRowSize, int opsColSize) {
     	int i,j;
