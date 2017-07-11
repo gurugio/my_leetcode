@@ -1,3 +1,36 @@
+// 167. Two Sum II - Input array is sorted
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int cmpnum(const void *a, const void *b)
+{
+	return *(int *)a - *(int *)b;
+}
+
+int* twoSum(int* numbers, int numbersSize, int target, int* returnSize) {
+	int i,j;
+	int *pairs = calloc(numbersSize * 2, sizeof(int));
+	int index = 0;
+	int key;
+	int *found;
+	
+	for (i = 0; i < numbersSize; i++) {
+		if (numbers[i] > target)
+			break;
+		key = target - numbers[i];
+		found = bsearch(&key, &numbers[i + 1], numbersSize - i - 1, sizeof(int),
+				cmpnum);
+		if (found) {
+			pairs[index++] = i + 1;
+			pairs[index++] = (int)(found - numbers) + 1;
+			//printf("found:%d %d\n", i, (int)(found - numbers));
+		}
+	}
+	*returnSize = index;
+	return pairs;
+}
+
 // 599. Minimum Index Sum of Two Lists
 /**
  * Return an array of size *returnSize.
