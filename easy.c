@@ -1,3 +1,31 @@
+// 657. Judge Route Circle
+bool judgeCircle(char* moves) {
+    /*int lcount = 0;
+    int rcount = 0;
+    int ucount = 0, dcount = 0;*/
+    int count[100] = {0,};
+    
+    for (; *moves != 0; moves++) {
+        /*switch (*moves) {
+            case 'L':
+                lcount++;
+                break;
+            case 'R':
+                rcount++;
+                break;
+            case 'D':
+                dcount++;
+                break;
+            case 'U':
+                ucount++;
+                break;
+        }*/
+        count[*moves]++;
+    }
+    //return (lcount == rcount) && (ucount == dcount);
+    return (count['L'] == count['R']) && (count['U'] == count['D']);
+}
+
 // 167. Two Sum II - Input array is sorted
 /**
  * Return an array of size *returnSize.
