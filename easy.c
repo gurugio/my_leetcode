@@ -1,3 +1,37 @@
+// 637. Average of Levels in Binary Tree
+void scan_tree(struct TreeNode *root, int cur_level, double *averages, int *count)
+{
+    if (!root)
+        return;
+    
+    scan_tree(root->left, cur_level+1, averages, count);
+    count[cur_level]++;
+    averages[cur_level] += root->val;
+    scan_tree(root->right, cur_level+1, averages, count);
+}
+
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+double* averageOfLevels(struct TreeNode* root, int* returnSize) {
+    double buffer[1024] = {0,};
+    int count[1024] = {0,};
+    double *ret;
+    int i;
+    int max_level = 0;
+    
+    scan_tree(root, 0, buffer, count);
+    for (max_level = 0; max_level < 1024; max_level++)
+        if (count[max_level] == 0) break;
+    *returnSize = max_level;
+    ret = calloc(max_level, sizeof(double));
+    memcpy(ret, buffer, sizeof(double) * max_level);
+    for (i = 0; i < max_level; i++)
+        ret[i] /= count[i];
+    return ret;
+}
+
 // 657. Judge Route Circle
 bool judgeCircle(char* moves) {
     /*int lcount = 0;
