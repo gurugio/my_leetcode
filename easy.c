@@ -1,3 +1,23 @@
+// 653. Two Sum IV - Input is a BST
+// O(n) = nlog(n).. not good
+bool search_tree(struct TreeNode *root, struct TreeNode *pair, int v) {
+    if (!root) return false;
+    if (root != pair && root->val == v) return true;
+    if (root->val < v) return search_tree(root->right, pair, v);
+    else return search_tree(root->left, pair, v);
+}
+
+bool scan_tree(struct TreeNode *root, struct TreeNode *cur, int k) {
+    if (!cur) return false;
+    //printf("search: cur-%d v=%d", cur->val, k - cur->val);
+    if (search_tree(root, cur, k - cur->val)) return true;
+    return scan_tree(root, cur->left, k) || scan_tree(root, cur->right, k);
+}
+
+bool findTarget(struct TreeNode* root, int k) {
+    return scan_tree(root, root, k);
+}
+
 // 637. Average of Levels in Binary Tree
 void scan_tree(struct TreeNode *root, int cur_level, double *averages, int *count)
 {
