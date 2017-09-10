@@ -1,3 +1,55 @@
+// 530. Minimum Absolute Difference in BST
+struct big_array {
+	size_t size;
+	size_t count;
+	int *buf;
+};
+
+struct big_array *arr_alloc(int size)
+{
+	struct big_array *ar = calloc(1, sizeof(*ar));
+	ar->size = size;
+	ar->count = 0;
+	ar->buf = calloc(size, sizeof(int));
+	return ar;
+}
+
+void arr_free(struct big_array *arr)
+{
+	free(arr->buf);
+	free(arr);
+}
+
+void arr_add(struct big_array *arr, int val)
+{
+	arr->buf[arr->count++] = val;
+	if (arr->count >= arr->size) {
+		arr->size *= 2;
+		arr->buf = realloc(arr->buf, sizeof(int) * arr->size);
+	}
+}
+
+void flat_tree(struct TreeNode *root, struct big_array *arr) {
+    if (!root) return;
+    flat_tree(root->left, arr);
+    arr_add(arr, root->val);
+    flat_tree(root->right, arr);
+}
+
+int getMinimumDifference(struct TreeNode* root) {
+    struct big_array *arr = arr_alloc(1024);
+    int i;
+    int min = 0x7fffffff;
+    flat_tree(root, arr);
+    for (i = 0; i < arr->count - 1; i++) {
+        //printf("[%d]=%d\n", i, arr->buf[i]);
+        if ((arr->buf[i + 1] - arr->buf[i]) < min)
+            min = arr->buf[i + 1] - arr->buf[i];
+    }
+    arr_free(arr);
+    return min;
+}
+
 // 653. Two Sum IV - Input is a BST
 // O(n) = nlog(n).. not good
 bool search_tree(struct TreeNode *root, struct TreeNode *pair, int v) {
