@@ -1,3 +1,34 @@
+// 3. Longest Substring Without Repeating Characters
+int lengthOfLongestSubstring(char* s) {
+    int len = strlen(s);
+    int max, cur_max, end;
+    int counter[255];
+    
+    max = cur_max = end = 0;
+    memset(counter, 0, sizeof(int)*255);
+    
+    while (end < len) {
+        if (counter[s[end]] == 0) {
+            counter[s[end]]++;
+            cur_max++;
+            end++;
+        } else {
+            int c;
+            memset(counter, 0, sizeof(int)*255);
+            if (max < cur_max)
+                max = cur_max;
+            cur_max = 0;
+            c = s[end];
+            // back to non-duplicated character??
+            while (s[end-1] != c)
+                end--;
+        }
+    }
+    if (max < cur_max)
+        max = cur_max;
+    return max;
+}
+
 // 2. Add Two Numbers
 /**
  * Definition for singly-linked list.
