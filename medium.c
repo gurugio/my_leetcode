@@ -1,3 +1,44 @@
+// 5. Longest Palindromic Substring
+char* longestPalindrome(char* s) {
+	int start, end, index;
+	int maxl;
+	char *ret;
+	int len = strlen(s);
+	char *maxp;
+	
+	index = start = end = 0;
+	maxl = 0;
+
+	while (s[index]) {
+		// get pivot
+		start = end = index;
+		while (start > 0 && s[start] == s[start - 1])
+			start--;
+		while (end < (len - 1) && s[end] == s[end + 1])
+			end++;
+
+		//printf("pivot=%d~%d\n", start, end);
+
+		// get palindrome
+		while (start > 0 && end < (len - 1) && s[start - 1] == s[end + 1]) {
+			start--;
+			end++;
+		}
+
+		// max?
+		if (maxl < (end - start + 1)) {
+			//printf("cur-max=%d~%d\n", start, end);
+			maxp = &s[start];
+			maxl = end - start + 1;
+		}
+		
+		index++;
+	}
+	ret = calloc(maxl + 1, sizeof(char));
+	memcpy(ret, maxp, maxl);
+	return ret;
+}
+
 // 3. Longest Substring Without Repeating Characters
 int lengthOfLongestSubstring(char* s) {
     int len = strlen(s);
