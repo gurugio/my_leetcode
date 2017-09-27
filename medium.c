@@ -1,3 +1,40 @@
+// 6. ZigZag Conversion
+char* convert(char* s, int numRows) {
+    int len = strlen(s);
+    int *index = calloc(len, sizeof(int));
+    int i, j;
+    char *ret = calloc(len + 1, sizeof(char));
+    int ret_index;
+    int rotate = (2 * numRows) - 2;
+
+    if (rotate == 0)
+	    rotate = 1;
+
+    for (i = 0; i < len; i++) {
+	    if ((i % rotate) <= (numRows - 1))
+		    index[i] = (i % rotate);
+	    else
+		    index[i] = (rotate - (i % rotate));
+    }
+
+write_string:
+    /* for (i = 0; i < len; i++) { */
+    /* 	    printf("%d ", index[i]); */
+    /* } */
+    /* printf("\n"); */
+
+    ret_index = 0;
+    for (i = 0; i < rotate; i++) {
+	    for (j = 0; j < len; j++) {
+		    if (index[j] == i) {
+			    /* printf("%c", s[j]); */
+			    ret[ret_index++] = s[j];
+		    }
+        }
+    }
+    return ret;
+}
+
 // 5. Longest Palindromic Substring
 char* longestPalindrome(char* s) {
 	int start, end, index;
