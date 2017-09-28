@@ -1,3 +1,59 @@
+// 8. String to Integer (atoi)
+int myAtoi(char* str) {
+    int minus;
+    char *buf = calloc(12, sizeof(char));
+    int len;
+    unsigned long result;
+    int overflow;
+    
+    while (*str == ' ')
+        str++;
+
+    if (*str == '-') {
+        minus = 1;
+	str++;
+    } else if (*str == '+') {
+	    minus = 0;
+	    str++;
+    } else
+	    minus = 0;
+
+    while (*str == '0')
+        str++;
+    
+    len = 0;
+    while (len < 11 && isdigit(*str))
+        buf[len++] = *str++;
+
+    if (len > 10) {
+	    overflow = 1;
+	    goto ret_result;
+    }
+    
+    result = 0;
+    overflow = 0;
+    for (int i = 0; i < len; i++) {
+	    result *= 10;
+	    result += (buf[i] - '0');
+	    if ((minus == 0 && result > 2147483647) ||
+		(minus == 1 && result > 2147483648)) {
+		    overflow = 1;
+		    break;
+	    }
+    }
+
+ret_result:
+    printf("temp:%d %d %s %ld\n", minus, overflow, buf, result);
+    if (overflow == 1 && minus == 1)
+	    result = -2147483648;
+    else if (overflow == 1 && minus == 0)
+	    result = 2147483647;
+    else if (minus == 1)
+	    result = -result;
+
+    return result;
+}
+
 // 6. ZigZag Conversion
 char* convert(char* s, int numRows) {
     int len = strlen(s);
