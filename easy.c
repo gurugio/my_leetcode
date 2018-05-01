@@ -1,3 +1,24 @@
+// 771. Jewels and Stones
+int numJewelsInStones(char* J, char* S) {
+    int jindex, sindex;
+    int jlen = strlen(J);
+    int slen = strlen(S);
+    int count = 0;
+    int jewel_types[255] = {0,};
+    
+    
+    for (jindex = 0; jindex < jlen; jindex++) {
+        jewel_types[J[jindex]] = 1;
+    }
+    
+    for (sindex = 0; sindex < slen; sindex++) {
+        if (jewel_types[S[sindex]])
+            count++;
+    }
+    
+    return count;
+}
+
 // 530. Minimum Absolute Difference in BST
 struct big_array {
 	size_t size;
