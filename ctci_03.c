@@ -265,9 +265,80 @@ void test_ex_3_4(void)
 	printf("%d\n", myqueue_remove(q));
 }
 
+struct minstack {
+	struct stack *front;
+	struct stack *back;
+};
+
+void minstack_sort(struct minstack *s)
+{
+	int tmp;
+	int min = 0x7fffffff;
+	while (!stack_empty(s->front)) {
+		tmp = stack_pop(s->front);
+		if (min > tmp)
+			min = tmp;
+		stack_push(s->back, tmp);
+	}
+	while (!stack_empty(s->back)) {
+		tmp = stack_pop(s->back);
+		if (tmp != min)
+			stack_push(s->front, tmp);
+	}
+	stack_push(s->front, min);
+}
+
+void minstack_push(struct minstack *s, int val)
+{
+	int min;
+	if (stack_empty(s->front) || stack_peek(s->front) > val) {
+		stack_push(s->front, val);
+		return;
+	}
+	min = stack_pop(s->front);
+	stack_push(s->front, val);
+	stack_push(s->front, min);
+}
+
+int minstack_pop(struct minstack *s)
+{
+	int min;
+	min = stack_pop(s->front);
+	minstack_sort(s);
+	return min;
+}
+
+int minstack_peek(struct minstack *s)
+{
+	return s->front->top->val;
+}
+
+void test_ex_3_5(void)
+{
+	struct minstack *ms = calloc(1, sizeof(*ms));
+	ms->front = calloc(1, sizeof(*ms->front));
+	ms->back = calloc(1, sizeof(struct stack));
+
+	minstack_push(ms, 3);
+	minstack_push(ms, 5);
+	minstack_push(ms, 7);
+	printf("%d\n", minstack_peek(ms));
+	minstack_push(ms, 2);
+	printf("%d\n", minstack_peek(ms));
+	minstack_push(ms, 1);
+	printf("%d\n", minstack_peek(ms));
+
+	printf("%d\n", minstack_pop(ms));
+	printf("%d\n", minstack_pop(ms));
+	printf("%d\n", minstack_pop(ms));
+	printf("%d\n", minstack_pop(ms));
+	printf("%d\n", minstack_pop(ms));
+}
+
 int main(void)
 {
 	//test_ex_3_2();
-	test_ex_3_4();
+	//test_ex_3_4();
+	test_ex_3_5();
 	return 0;
 }
