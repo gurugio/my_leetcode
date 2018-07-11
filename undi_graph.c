@@ -1,6 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define QSIZE 6
+struct queue {
+	struct vertex *buffer[QSIZE];
+	int head, tail;
+};
+
+struct queue *queue_alloc(void)
+{
+	struct queue *q = calloc(1, sizeof(*q));
+	q->head = q->tail = 0;
+	return q;
+}
+
+int queue_add(struct queue *q, struct vertex *v)
+{
+	if ((q->tail + 1) % QSIZE == q->head)
+		return 0;
+	q->buffer[q->tail] = v;
+	q->tail = (q->tail + 1) % QSIZE;
+	return 1;
+}
+
+struct vertex *queue_remove(struct queue *q)
+{
+	struct vertex *v;
+
+	if (q->head == q->tail)
+		return NULL;
+	v = q->buffer[q->head];
+	q->head = (q->head + 1) % QSIZE;
+	return v;
+}
+
+int queue_empty(struct queue *q)
+{
+	return q->head == q->tail;
+}
+
+void queue_print(struct queue *q)
+{
+	int i;
+	printf("h:%d t:%d\n", q->head, q->tail);
+	for (i = 0; i < QSIZE; i++)
+		printf("%ld ", (unsigned long)q->buffer[i]);
+	printf("\n");
+}
+
+void queue_test(void)
+{
+	unsigned long i;
+	struct queue *q = queue_alloc();
+	for (i = 1; i <= QSIZE + 1; i++) 
+		printf("%d\n", queue_add(q, (struct vertex *)i));
+	queue_print(q);
+	for (i = 1; i <= QSIZE + 1; i++) 
+		printf("%ld\n", (unsigned long)queue_remove(q));
+	queue_print(q);	
+	for (i = 11; i <= 13; i++) 
+		printf("%d\n", queue_add(q, (struct vertex *)i));
+	queue_print(q);
+	for (i = 0; i <1; i++) 
+		printf("%ld\n", (unsigned long)queue_remove(q));
+	queue_print(q);	
+	for (i = 111; i <= 113; i++) 
+		printf("%d\n", queue_add(q, (struct vertex *)i));
+	queue_print(q);
+}
+
 struct arc;
 struct vertex;
 
@@ -85,12 +153,7 @@ void depth_traversal(struct vertex *gra)
 	}
 }
 
-void traversal(struct vertex *gra)
-{
-	depth_traversal(gra);
-}
-
-int main(void)
+void graph_depth_traversal(void)
 {
 	struct vertex *graph = create_graph(6);
 	insert_vertex(graph, 0, 1, 1);
@@ -113,6 +176,62 @@ int main(void)
 	insert_vertex(graph, 5, 4, 1);
 	print_arc(graph, 5);
 
-	traversal(graph);
+	depth_traversal(graph);
+}
+
+void breadth_traversal(struct vertex *graph)
+{
+	struct queue *q = queue_alloc();
+	struct arc *arc;
+	
+	queue_add(q, graph);
+	graph->flag = VERTEX_VISIT;
+	printf("VISIT:%d\n", graph->id);
+
+	while (!queue_empty(q)) {
+		graph = queue_remove(q);
+		arc = graph->arc;
+		do {
+			if (arc->vertex->flag != VERTEX_VISIT) {
+				arc->vertex->flag = VERTEX_VISIT;
+				queue_add(q, arc->vertex);
+				printf("VISIT:%d\n", arc->vertex->id);
+			}
+			arc = arc->next;
+		} while (arc != graph->arc);
+	}
+}
+
+void graph_breadth_traversal(void)
+{
+	struct vertex *graph = create_graph(6);
+	insert_vertex(graph, 0, 1, 1);
+	print_arc(graph, 0);
+	insert_vertex(graph, 1, 2, 1);
+	insert_vertex(graph, 1, 4, 1);
+	print_arc(graph, 1);
+	insert_vertex(graph, 2, 1, 1);
+	insert_vertex(graph, 2, 3, 1);
+	insert_vertex(graph, 2, 4, 1);
+	print_arc(graph, 2);
+	insert_vertex(graph, 3, 2, 1);
+	insert_vertex(graph, 3, 4, 1);
+	print_arc(graph, 3);
+	insert_vertex(graph, 4, 1, 1);
+	insert_vertex(graph, 4, 2, 1);
+	insert_vertex(graph, 4, 3, 1);
+	insert_vertex(graph, 4, 5, 1);
+	print_arc(graph, 4);
+	insert_vertex(graph, 5, 4, 1);
+	print_arc(graph, 5);
+
+	breadth_traversal(graph);
+}
+
+int main(void)
+{
+	//queue_test();
+	//graph_depth_traversal();
+	graph_breadth_traversal();
 	return 0;
 }
