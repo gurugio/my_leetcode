@@ -306,12 +306,50 @@ void ex_4_1_2(void)
 	printf("%d\n", graph_meet(graph, 5));
 }
 
+struct tree {
+	int val;
+	struct tree *left;
+	struct tree *right;
+};
+
+struct tree *make_bintree(int *array, int start, int end)
+{
+	int pindex;
+	struct tree *parent;
+
+	if (start > end)
+		return NULL;
+
+	pindex = (start + end) / 2;
+	parent = calloc(1, sizeof(*parent));
+	parent->val = array[pindex];
+	parent->left = make_bintree(array, start, pindex - 1);
+	parent->right = make_bintree(array, pindex + 1, end);
+	return parent;
+}
+
+void traversal_inorder(struct tree *root)
+{
+	if (!root) return;
+	traversal_inorder(root->left);
+	printf("%d\n", root->val);
+	traversal_inorder(root->right);
+}
+
+void ex_4_2(void)
+{
+	int arr1[] = {0,1,2,3,4,5,6,7,8};
+	struct tree *root = make_bintree(arr1, 0, 8);
+	traversal_inorder(root);
+}
+
 int main(void)
 {
 	//queue_test();
 	//graph_depth_traversal();
 	//graph_breadth_traversal();
 	//ex_4_1();
-	ex_4_1_2();
+	//ex_4_1_2();
+	ex_4_2();
 	return 0;
 }
