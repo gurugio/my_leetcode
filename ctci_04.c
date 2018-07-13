@@ -400,6 +400,55 @@ void ex_4_3(void)
 	}
 }
 
+void print_tree(struct tree *root)
+{
+	if (!root || (!root->left && !root->right)) {
+		printf("X X\n");
+		return;
+	}
+
+	printf("root:%d->", root->val);
+	if (!root->left)
+		printf("X %d\n", root->right->val);
+	else if (!root->right)
+		printf("%d X\n", root->left->val);
+	else
+		printf("%d %d\n", root->left->val, root->right->val);
+
+	print_tree(root->left);
+	print_tree(root->right);
+}
+
+int get_balance(struct tree *root)
+{
+	int left;
+	int right;
+	if (!root->left && !root->right)
+		left = right = 0;
+	else if (!root->left) {
+		left = 0;
+		right = get_balance(root->right);
+	} else if (!root->right) {
+		right = 0;
+		left = get_balance(root->left);
+	} else {
+		left = get_balance(root->left);
+		right = get_balance(root->right);
+	}
+	printf("p=%d l=%d r=%d\n", root->val, left, right);
+	if (!(left + 1 == right || left - 1 == right || left == right))
+		printf("UNBALANCE at %d\n", root->val);
+	return ((left > right) ? left + 1 : right + 1);
+}
+
+void ex_4_4(void)
+{
+	int arr1[] = {0,1,2,3,4,5,6,7,8,9,10,11};
+	struct tree *root = make_bintree(arr1, 0, sizeof(arr1)/sizeof(int) - 1);
+	print_tree(root);
+	get_balance(root);
+}
+
 int main(void)
 {
 	//queue_test();
@@ -408,6 +457,7 @@ int main(void)
 	//ex_4_1();
 	//ex_4_1_2();
 	//ex_4_2();
-	ex_4_3();
+	//ex_4_3();
+	ex_4_4();
 	return 0;
 }
