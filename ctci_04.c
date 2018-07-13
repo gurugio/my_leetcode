@@ -343,6 +343,63 @@ void ex_4_2(void)
 	traversal_inorder(root);
 }
 
+
+struct list_val {
+	int val;
+	struct list_val *next;
+};
+
+struct list_depth {
+	int depth;
+	struct list_depth *next;
+	struct list_val *val_list;
+};
+
+void depth_add(struct list_depth *dhead, int depth, int val)
+{
+	struct list_depth *dnode;
+	struct list_val *vnode;
+
+	for (dnode = dhead->next; dnode && dnode->depth != depth; dnode = dnode->next) {
+		continue;
+	}
+	if (!dnode) {
+		dnode = calloc(1, sizeof(*dnode));
+		dnode->depth = depth;
+		dnode->next = dhead->next;
+		dhead->next = dnode;
+	}
+	vnode = calloc(1, sizeof(*vnode));
+	vnode->val = val;
+	vnode->next = dnode->val_list;
+	dnode->val_list = vnode;
+}
+
+void traversal_depth_list(struct tree *root, struct list_depth *dhead, int depth)
+{
+	if (!root) return;
+	traversal_depth_list(root->right, dhead, depth + 1);
+	depth_add(dhead, depth, root->val);
+	traversal_depth_list(root->left, dhead, depth + 1);
+}
+
+void ex_4_3(void)
+{
+	int arr1[] = {0,1,2,3,4,5,6,7,8,9,10,11};
+	struct tree *root = make_bintree(arr1, 0, sizeof(arr1)/sizeof(int) - 1);
+	struct list_depth dhead = {0, NULL, NULL};
+	struct list_depth *dnode;
+	struct list_val *vnode;
+
+	traversal_depth_list(root, &dhead, 0);
+	for (dnode = dhead.next; dnode; dnode = dnode->next) {
+		printf("depth=%d\n", dnode->depth);
+		for (vnode = dnode->val_list; vnode; vnode = vnode->next)
+			printf("%d ", vnode->val);
+		printf("\n");
+	}
+}
+
 int main(void)
 {
 	//queue_test();
@@ -350,6 +407,7 @@ int main(void)
 	//graph_breadth_traversal();
 	//ex_4_1();
 	//ex_4_1_2();
-	ex_4_2();
+	//ex_4_2();
+	ex_4_3();
 	return 0;
 }
