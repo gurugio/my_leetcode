@@ -1,3 +1,35 @@
+// 746. Min Cost Climbing Stairs
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+
+int get_cost(int *cost, int costsize, int cur_floor, int *mincost)
+{
+    int a, b;
+    
+    if (cur_floor >= costsize)
+        return 0;
+    
+    if (mincost[cur_floor + 1])
+        a = mincost[cur_floor + 1];
+    else {
+        a = get_cost(cost, costsize, cur_floor + 1, mincost);
+        mincost[cur_floor + 1] = a;
+    }
+    
+    if (mincost[cur_floor + 2])
+        b = mincost[cur_floor + 2];
+    else {
+        b = get_cost(cost, costsize, cur_floor + 2, mincost);
+        mincost[cur_floor + 2] = b;
+    }
+    
+    return cost[cur_floor] + MIN(a, b);
+}
+
+int minCostClimbingStairs(int* cost, int costSize) {
+    int mincost[1024] = {0,};
+    return MIN(get_cost(cost, costSize, 0, mincost), get_cost(cost, costSize, 1, mincost));
+}
+
 // 771. Jewels and Stones
 int numJewelsInStones(char* J, char* S) {
     int jindex, sindex;
