@@ -1,3 +1,20 @@
+// 1221. Split a String in Balanced Strings
+int balancedStringSplit(char * s){
+    int count = 0;
+    int ret = 0;
+    
+    while (*s) {
+        if (*s == 'R')
+            count++;
+        else
+            count--;
+        if (count == 0)
+            ret++;
+        s++;
+    }
+    return ret;
+}
+
 // 746. Min Cost Climbing Stairs
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 
