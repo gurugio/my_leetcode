@@ -1,3 +1,78 @@
+//17. Letter Combinations of a Phone Number
+const char *table[10] = {"",
+		   "",
+		   "abc", // 2
+		   "def", // 3
+		   "ghi",
+		   "jkl",
+		   "mno",
+			 "pqrs", // 7
+		   "tuv",
+		   "wxyz"}; // 9
+
+void dfs(const char *nums, char *buffer, int bufindex, char **output, int *outputindex)
+{
+	int index = nums[0] - '0';
+	for (const char *str = table[index]; *str != 0; str++) {
+		//printf("add-%c\n", *str);
+		buffer[bufindex] = *str;
+		if (nums[1]) {
+			dfs(nums + 1, buffer, bufindex + 1, output, outputindex);
+		} else {
+			buffer[bufindex+1] = '\0';
+			//printf("buf=%s\n", buffer);
+			//printf("outputindex=%d\n", *outputindex);
+			//output[*outputindex] = strdup(buffer);
+			strcpy(output[*outputindex], buffer);
+			(*outputindex)++;
+		}
+
+	}
+	//printf("\n");
+}
+
+char ** letterCombinations(char * digits, int* returnSize)
+{
+	char buffer[30];
+	int outputsize;
+	char **output;
+	int outputindex = 0;
+	int digitsize = strlen(digits);
+
+	if (digitsize == 0) {
+		*returnSize = 0;
+		return NULL;
+	}
+	
+	outputsize = 1;
+	for (int i = 0; i < strlen(digits); i++)
+		outputsize *= strlen(table[(int)(digits[i] - '0')]);
+
+	output = (char **)calloc(outputsize, sizeof(char*));
+	for (int i = 0; i < outputsize; i++) {
+		output[i] = (char *)calloc(digitsize + 1, sizeof(char));
+	}
+
+	dfs(digits, buffer, 0, output, &outputindex);
+	*returnSize = outputsize;
+	return output;
+}
+
+int main(void)
+{
+	char test[] = "27";
+	int outputsize;
+	char **output;
+
+	output = letterCombinations(test, &outputsize);
+	for (int i = 0; i < outputsize; i++) {
+		printf("%d - %s\n", i, output[i]);
+	}
+	
+	return 0;
+}
+
+
 // 338. Counting Bits
 int count_byte[] = {/*0*/0,
 /*1*/1,
