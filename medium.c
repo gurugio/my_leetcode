@@ -1,3 +1,32 @@
+// 19. Remove Nth Node From End of List
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+	struct ListNode dummy = {-1, head};
+	struct ListNode *fast = head;
+	struct ListNode *slow = head;
+	
+	while (n-- > 0 && fast)
+		fast = fast->next;
+
+	if (!fast && n > 0) {
+		/* n is over the range */
+		return NULL;
+	}
+	if (!fast) {
+		/* n is the same to the number of nodes */
+		return head->next;
+	}
+
+	slow = &dummy;
+	while (fast) {
+		fast = fast->next;
+		slow = slow->next;
+	}
+
+	slow->next = slow->next->next;
+	return head;
+}
+
+
 //17. Letter Combinations of a Phone Number
 const char *table[10] = {"",
 		   "",
