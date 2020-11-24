@@ -1,3 +1,23 @@
+# 22. Generate Parentheses
+class Solution:
+    def gen(self, n: int, cur: str, open: int, close: int) -> List[str]:
+        ret1 = []
+        ret2 = []
+        if open < n:
+            ret1 = self.gen(n, cur + '(', open + 1, close)
+        if close < open:
+            ret2 = self.gen(n, cur + ')', open, close + 1)
+
+        #print("cur={} ret1={} ret2={}".format(cur, ret1, ret2))
+        if ret1 or ret2: # cur is not complete set, need to add something
+            return ret1 + ret2;
+        else: # cur is a complete set, so just return it
+            return [cur]
+
+    def generateParenthesis(self, n: int) -> List[str]:
+        cur = ''
+        return self.gen(n, cur, 0, 0)
+
 # 18. 4Sum
 class Solution:
     def threeSum(self, nums: List[int], target) -> List[List[int]]:
