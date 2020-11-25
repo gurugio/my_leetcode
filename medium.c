@@ -1,3 +1,31 @@
+// 24. Swap Nodes in Pairs
+struct ListNode* swapPairs(struct ListNode* head){
+	struct ListNode *ret, *prev, *cur, *n;
+	
+	if (head == NULL) return NULL;
+
+	ret = head->next;
+	if (ret == NULL) return head;
+
+	cur = head;
+	prev = NULL;
+	while (cur && cur->next) {
+		n = cur->next;
+		//printf("before: cur=%d next=%d\n", cur->val, n->val);
+
+		cur->next = n->next;
+		n->next = cur;
+
+		if (prev) prev->next = n;
+
+		prev = cur;
+		//printf("after: prev=%d cur=%d\n", prev->val, cur->val);
+
+		cur = cur->next;
+	}
+	return ret;
+}
+
 // 19. Remove Nth Node From End of List
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
 	struct ListNode dummy = {-1, head};
