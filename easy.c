@@ -1,3 +1,21 @@
+// 1470. Shuffle the Array
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* shuffle(int* nums, int numsSize, int n, int* returnSize){
+    int *ret = calloc(numsSize, sizeof(int));
+    int left = 0;
+    int right = n;
+    int i = 0;
+    
+    for (right = n, left = 0; right < numsSize; right++, left++) {
+        ret[i++] = nums[left];
+        ret[i++] = nums[right];
+    }
+    *returnSize = i;
+    return ret;
+}
+
 // 1221. Split a String in Balanced Strings
 int balancedStringSplit(char * s){
     int count = 0;
