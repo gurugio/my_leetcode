@@ -1,3 +1,22 @@
+// 33. Search in Rotated Sorted Array
+int search(int* nums, int numsSize, int target){
+    int s = 0, e = numsSize - 1;
+    
+    if (target < nums[s] && target > nums[e])
+        return -1;
+    
+    if (target >= nums[s]) {
+        for (int i = s; i <= e; i++) {
+            if (nums[i] == target) return i;
+        }
+    } else if (target <= nums[e]) {
+        for (int i = e; i >= s; i--) {
+            if (nums[i] == target) return i;
+        }
+    }
+    return -1;
+}
+
 // 24. Swap Nodes in Pairs
 struct ListNode* swapPairs(struct ListNode* head){
 	struct ListNode *ret, *prev, *cur, *n;
