@@ -1,3 +1,39 @@
+// 34. Find First and Last Position of Element in Sorted Array
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* searchRange(int* nums, int numsSize, int target, int* returnSize){
+    int s = 0;
+    int l = numsSize - 1;
+    int pivot;
+    int *ret = calloc(2, sizeof(int));
+    ret[0] = ret[1] = -1;
+    *returnSize = 2;
+    
+    while (s <= l) {
+        pivot = (s + l) / 2;
+        if (nums[pivot] < target) {
+            s = pivot + 1;
+        } else if (nums[pivot] > target) {
+            l = pivot - 1;
+        } else {
+            int starting, ending;
+            
+            for (starting = pivot; starting >= s && nums[starting] == target; starting--)
+                continue;
+            
+            for (ending = pivot; ending <= l && nums[ending] == target; ending++)
+                continue;
+            
+            ret[0] = starting + 1;
+            ret[1] = ending - 1;
+            break;
+        }
+    }
+    return ret;
+
+}
+
 // 33. Search in Rotated Sorted Array
 int search(int* nums, int numsSize, int target){
     int s = 0, e = numsSize - 1;
