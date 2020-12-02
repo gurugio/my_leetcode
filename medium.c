@@ -1,3 +1,109 @@
+// 36. Valid Sudoku
+bool nodup(char *arr)
+{
+	int counter[10] = {0,};
+	for (int i = 0; i < 9; i++) {
+		if (isdigit(arr[i])) {
+			//printf("%c ", arr[i]);
+			if (++counter[arr[i] - '0'] > 1)
+				return false;
+		}
+	}
+	//printf("\n");
+	return true;
+}
+
+bool isValidSudoku(char** board, int boardSize, int* boardColSize)
+{
+	int k;
+	char arr[9];
+
+	for (int i = 0; i < 9; i++)
+		if (!nodup(board[i])) return false;
+
+	for (int c = 0; c < 9; c++) {
+		k = 0;
+		for (int r = 0; r < 9; r++) {
+			arr[k++] = board[r][c];
+		}
+		if (!nodup(arr)) return false;
+	}
+
+	k = 0;
+	for (int r = 0; r < 3; r++) {
+		for (int c = 0; c < 3; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 0; r < 3; r++) {
+		for (int c = 3; c < 6; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 0; r < 3; r++) {
+		for (int c = 6; c < 9; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 3; r < 6; r++) {
+		for (int c = 0; c < 3; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 3; r < 6; r++) {
+		for (int c = 3; c < 6; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 3; r < 6; r++) {
+		for (int c = 6; c < 9; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+	
+	k = 0;
+	for (int r = 6; r < 9; r++) {
+		for (int c = 0; c < 3; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 6; r < 9; r++) {
+		for (int c = 3; c < 6; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+
+	k = 0;
+	for (int r = 6; r < 9; r++) {
+		for (int c = 6; c < 9; c++) {
+			arr[k++] = board[r][c];
+		}
+	}
+	if (!nodup(arr)) return false;
+	
+	return true;
+}
+
 // 34. Find First and Last Position of Element in Sorted Array
 /**
  * Note: The returned array must be malloced, assume caller calls free().
