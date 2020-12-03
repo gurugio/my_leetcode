@@ -1,4 +1,38 @@
 // 36. Valid Sudoku
+bool isValidSudoku(char** board, int boardSize, int* boardColSize)
+{
+	int k;
+	char arr[9];
+
+	int rcounter[9][9];
+	int ccounter[9][9];
+	int bcounter[9][9];
+	int num;
+	int bindex;
+	
+	memset(rcounter, 0, 9*9*sizeof(int));
+	memset(ccounter, 0, 9*9*sizeof(int));
+	memset(bcounter, 0, 9*9*sizeof(int));
+
+	for (int r = 0; r < 9; r++) {
+		for (int c = 0; c < 9; c++) {
+			if (isdigit(board[r][c])) {
+				num = board[r][c] - '1';
+				if (rcounter[r][num])
+					return false;
+				if (ccounter[c][num])
+					return false;
+				bindex = (r / 3 * 3) + (c / 3);
+				if (bcounter[bindex][num])
+					return false;
+				bcounter[bindex][num] = rcounter[r][num] = ccounter[c][num] = 1;
+			}
+		}
+	}
+
+	return true;
+}
+// 36. Valid Sudoku
 bool nodup(char *arr)
 {
 	int counter[10] = {0,};
