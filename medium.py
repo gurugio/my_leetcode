@@ -1,3 +1,22 @@
+# 39. Combination Sum
+class Solution:
+    def combi(self, cur: List[int], nums: List[int], target: int) -> List[List[int]]:
+        #print('cur={} nums={} target={}'.format(cur, nums, target))
+        if not nums:
+            return []
+        elif nums[0] == target:
+            #print('    ret=', cur + [nums[0]])
+            return [cur + [nums[0]]]
+        elif nums[0] < target:
+            return self.combi(cur + [nums[0]], nums, target - nums[0]) + self.combi(cur, nums[1:], target)
+        else:
+            #print('    none')
+            return []
+    
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        return self.combi([], candidates, target)
+
 # 22. Generate Parentheses
 class Solution:
     def gen(self, n: int, cur: str, open: int, close: int) -> List[str]:
