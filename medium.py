@@ -1,3 +1,30 @@
+# 40. Combination Sum II
+class Solution:
+    def combi(self, cur: List[int], nums: List[int], target: int) -> List[List[int]]:
+        #print('cur={} nums={} target={}'.format(cur, nums, target))
+        if target == 0:
+            #print('    ret=', cur)
+            return [cur]
+        elif target < 0:
+            return []
+        elif not nums:
+            return []
+
+        k = 0
+        while len(nums) > k and nums[0] == nums[k]:
+            k += 1
+
+        ret = []
+        for i in range(k + 1):
+            ret += self.combi(cur, nums[k:], target)
+            cur = cur + [nums[0]]
+            target = target - nums[0]
+        return ret
+    
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        return self.combi([], candidates, target)
+
 # 39. Combination Sum
 class Solution:
     def combi(self, cur: List[int], nums: List[int], target: int) -> List[List[int]]:
