@@ -1,3 +1,21 @@
+class Solution:
+    def extract(self, nums: List[int], index: int) -> List[int]:
+        ret = nums.copy()
+        ret.pop(index)
+        return ret
+
+    def do_permute(self, cur: List[int], nums: List[int]) -> List[List[int]]:
+        if len(nums) == 1:
+            return [cur + [nums[0]]]
+
+        ret = []
+        for i in range(len(nums)):
+            ret += self.do_permute(cur + [nums[i]], nums[:i] + nums[i+1:])
+        return ret
+    
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        return self.do_permute([], nums)
+   
 # 40. Combination Sum II
 class Solution:
     def combi(self, cur: List[int], nums: List[int], target: int) -> List[List[int]]:
