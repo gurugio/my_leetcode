@@ -1,3 +1,22 @@
+# 47. Permutations II
+class Solution:
+    def do_permute(self, cur: List[int], nums: List[int]) -> List[List[int]]:
+        if len(nums) == 1:
+            return [cur + [nums[0]]]
+
+        ret = []
+        i = 0
+        while i < len(nums):
+            ret += self.do_permute(cur + [nums[i]], nums[:i] + nums[i+1:])
+            while i + 1 < len(nums) and nums[i + 1] == nums[i]:
+                i += 1
+            i += 1
+        return ret
+    
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        return self.do_permute([], nums)
+# 46. Permutations
 class Solution:
     def extract(self, nums: List[int], index: int) -> List[int]:
         ret = nums.copy()
