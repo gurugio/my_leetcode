@@ -1,3 +1,126 @@
+// 43. Multiply Strings
+void reverse(char *str)
+{
+	int len = strlen(str);
+	for (int i = 0; i <= (len - 1)/2; i++) {
+		char t = str[i];
+		str[i] = str[len - 1 - i];
+		str[len - 1 - i] = t;
+	}
+}
+
+char sum_char(char x, char y, int *c)
+{
+	int d = x + y - '0' - '0';
+	*c = d / 10;
+	return d % 10;
+}
+
+void sum_str(char *x, char *y, char *sum)
+{
+	int i, k, c;
+	int lenx = strlen(x);
+	int leny = strlen(y);
+
+	if (lenx == 0 || leny == 0)
+		return;
+
+	reverse(x);
+	reverse(y);
+	
+	i = k = c = 0;
+
+	for (i = k = c = 0; x[i] && y[i]; i++, k++) {
+		int d = (x[i] - '0') + (y[i] - '0');
+		d += c;
+		c = d / 10;
+		sum[k] = '0' + (d % 10);
+		//printf("%c\n", sum[k]);
+	}
+
+	for ( ; i < lenx; i++, k++) {
+		sum[k] = ((x[i] + c) > '9') ? '0' : (x[i] + c);
+		c = ((x[i] + c) > '9') ? 1 : 0;
+	}
+	for ( ; i < leny; i++, k++) {
+		sum[k] = ((y[i] + c) > '9') ? '0' : (y[i] + c);
+		c = ((y[i] + c) > '9') ? 1 : 0;
+	}
+	if (c == 1)
+		sum[k++] = '1';
+	sum[k] = '\0';
+	reverse(sum);
+	reverse(x);
+	reverse(y);
+}
+
+void mul_char(char *x, char y, char *ret)
+{
+	int i, c;
+	int lx = strlen(x);
+	
+	if (y == '0') {
+		ret[0] = '0';
+		ret[1] = '\0';
+	}
+	if (y == '1') {
+		strcpy(ret, x);
+		ret[lx] = '\0';
+	}
+
+	reverse(x);
+	c = 0;
+	for (i = 0; i < lx; i++) {
+		int d = (x[i] - '0') * (y - '0') + c;
+		c = d / 10;
+		d = d % 10;
+		ret[i] = d + '0';
+	}
+
+	if (c != 0)
+		ret[i++] = c + '0';
+	ret[i] = '\0';
+
+	reverse(ret);
+	reverse(x);
+}
+
+char *multiply(char *num1, char *num2)
+{
+	int lennum1 = strlen(num1);
+	int lennum2 = strlen(num2);
+	char *ret = calloc(lennum1 + lennum2 + 2, sizeof(char)); // overflow + null
+	char *temp_sum = calloc(lennum1 + lennum2 + 2, sizeof(char));
+	char *temp_mul = calloc(lennum1 + lennum2 + 2, sizeof(char));
+
+	if ((num2[0] == '0' && lennum2 == 1) ||
+	    (num1[0] == '0' && lennum1 == 1)) {
+		ret[0] = '0';
+		ret[1] = '\0';
+		return ret;
+	}
+	
+	for (int i = 0; i < lennum2; i++) {
+		int lret;
+		
+		memset(temp_mul, 0, lennum1 + lennum2);
+
+		mul_char(num1, num2[i], temp_mul);
+		//printf("%s * %c = %s\n", num1, num2[i], temp_mul);
+
+		lret = strlen(ret);
+		ret[lret] = '0'; // add '0' => X10
+		ret[lret + 1] = '\0';
+
+		sum_str(ret, temp_mul, temp_sum);
+		strcpy(ret, temp_sum);
+		//printf("sum=%s\n", temp_sum);
+	}
+	free(temp_sum);
+	free(temp_mul);
+	return ret;
+}
+
 // 36. Valid Sudoku
 bool isValidSudoku(char** board, int boardSize, int* boardColSize)
 {
