@@ -1,3 +1,29 @@
+// 48. Rotate Image
+void swap_array(int *a1, int *a2, int size)
+{
+	for (int i = 0; i < size; i++) {
+		int t = a1[i];
+		a1[i] = a2[i];
+		a2[i] = t;
+	}
+}
+
+void rotate(int** matrix, int matrixSize, int* matrixColSize)
+{
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixSize - 1 - i; j++) {
+			int t = matrix[i][j];
+			matrix[i][j] = matrix[matrixSize - 1 - j][matrixSize - 1 - i];
+			matrix[matrixSize - 1 - j][matrixSize - 1 - i] = t;
+		}
+	}
+	for (int row = 0; row <= (matrixSize - 1) / 2; row++) {
+		swap_array(matrix[row], matrix[matrixSize - 1 - row], matrixSize);
+	}
+
+	*matrixColSize = matrixSize;
+}
+
 // 43. Multiply Strings
 void reverse(char *str)
 {
