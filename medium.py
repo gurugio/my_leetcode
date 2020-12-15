@@ -1,5 +1,15 @@
 # 49. Group Anagrams
 class Solution:
+    def groupAnagrams(self, strs):
+        d = {}
+        for w in sorted(strs):
+            key = "".join(sorted(w))
+            #print('key={}'.format(key))
+            d[key] = d.get(key, []) + [w]
+        return list(d.values())
+
+# 49. Group Anagrams
+class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         found = [False] * len(strs)
         words = ["".join(sorted(s)) for s in strs]
