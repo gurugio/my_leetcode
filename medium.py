@@ -1,3 +1,22 @@
+# 49. Group Anagrams
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        found = [False] * len(strs)
+        words = ["".join(sorted(s)) for s in strs]
+        ret = []
+        for i in range(len(strs)):
+            if not found[i]:
+                target = words[i]
+                found_words = []
+                for j in range(i, len(strs)):
+                    if target == words[j]:
+                        found[j] = True
+                        found_words += [strs[j]]
+
+                ret += [found_words.copy()]
+                
+        return ret
+    
 # 47. Permutations II
 class Solution:
     def do_permute(self, cur: List[int], nums: List[int]) -> List[List[int]]:
