@@ -1,3 +1,42 @@
+// 50. Pow(x, n)
+double pow_double(double x, unsigned int n)
+{
+	double ret = x;
+	for (unsigned int i = n; i > 1; i >>= 1)
+		ret *= ret;
+	return ret;
+}
+
+double myPow(double x, int n)
+{
+	double ret = 1.0;
+	bool reverse = false;
+
+	// special cases
+	if (n == 1)
+		return x;
+	if (n == 0)
+		return 1;
+	// if -2^32
+	if ((unsigned int)n == 0x80000000) {
+		n = 0x7fffffff;
+		return 1 / pow_double(x, 0x80000000);
+	}
+
+	if (n < 0) { //only 1 ~ 2^31-1
+		reverse = true;
+		n = -n;
+	}
+
+	for (unsigned int i = 1; i < 0x80000000; i <<= 1) {
+		if (n & i) {
+			ret *= pow_double(x, i);
+		}
+	}
+
+	return reverse ? (1/ret) : ret;
+}
+
 // 48. Rotate Image
 void swap_array(int *a1, int *a2, int size)
 {
