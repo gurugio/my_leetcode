@@ -19,7 +19,6 @@ double myPow(double x, int n)
 		return 1;
 	// if -2^32
 	if ((unsigned int)n == 0x80000000) {
-		n = 0x7fffffff;
 		return 1 / pow_double(x, 0x80000000);
 	}
 
