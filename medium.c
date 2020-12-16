@@ -1,3 +1,111 @@
+// 54. Spiral Matrix
+enum {
+      GO_COL = 0,
+      GO_ROW,
+      BACK_COL,
+      BACK_ROW,
+      MAX_STATE,
+};
+
+
+int check(int *visited, int rsize, int csize, int r, int c)
+{
+	int v;
+	if (r >= rsize || r < 0)
+		return 0;
+	if (c >= csize || c < 0)
+		return 0;
+	v = visited[csize * r + c];
+	if (v == 1) {
+		//printf("visited %d\n", csize*r+c);
+		return 0;
+	}
+	return 1;
+}
+
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize)
+{
+	int visited[matrixSize * (*matrixColSize)];
+	int cur_row, next_row;
+	int cur_col, next_col;
+	int state;
+	int *record;
+	int record_index = 0;
+
+	memset(visited, 0, sizeof(int) * matrixSize * (*matrixColSize));
+	record = calloc(matrixSize * (*matrixColSize), sizeof(int));
+	
+	cur_row = 0;
+	cur_col = -1;
+	state = GO_COL;
+	
+	while (1) {
+		//printf("cur: %d, %d\n", cur_row, cur_col);
+
+		next_col = cur_col;
+		next_row = cur_row;
+		switch (state) {
+		case GO_COL:
+			next_col++;
+			break;
+		case GO_ROW:
+			next_row++;
+			break;
+		case BACK_COL:
+			next_col--;
+			break;
+		case BACK_ROW:
+			next_row--;
+			break;
+		default:
+			printf("Wrong state: %d\n", state);
+			exit(1);
+		}
+
+		//printf("try: %d, %d\n", next_row, next_col);
+
+		if (check(visited, matrixSize, *matrixColSize, next_row, next_col)) {
+			cur_col = next_col;
+			cur_row = next_row;
+			visited[(*matrixColSize) * cur_row + cur_col] = 1;
+			//printf("  Visit: %d, %d (%d)\n",
+			//cur_row, cur_col, cur_row * (*matrixColSize) + cur_col);
+			record[record_index++] = matrix[cur_row][cur_col];
+		} else {
+			state = (state + 1) % MAX_STATE;
+
+			next_col = cur_col;
+			next_row = cur_row;
+			
+			switch (state) {
+			case GO_COL:
+				next_col = cur_col + 1;
+				break;
+			case GO_ROW:
+				next_row = cur_row + 1;
+				break;
+			case BACK_COL:
+				next_col = cur_col - 1;
+				break;
+			case BACK_ROW:
+				next_row = cur_row - 1;
+				break;
+			default:
+				printf("Wrong state: %d\n", state);
+				exit(1);
+			}
+
+			if (!check(visited, matrixSize, *matrixColSize, next_row, next_col)) {
+				//printf("final: %d, %d\n", cur_row, cur_col);
+				break;
+			}
+		}
+	}
+
+	*returnSize = record_index;
+	return record;
+}
+
 // 50. Pow(x, n)
 double pow_double(double x, unsigned int n)
 {
