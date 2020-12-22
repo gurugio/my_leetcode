@@ -1,3 +1,31 @@
+// 55. Jump Game
+#if 0 // failed, too slow
+bool canJump(int* nums, int numsSize){
+	if (numsSize <= 1)
+		return true;
+
+	for (int i = nums[0]; i > 0; i--) {
+		if (canJump(&nums[i], numsSize - i))
+			return true;
+	}
+	return false;
+}
+#endif
+
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
+bool canJump(int* nums, int numsSize){
+    int far = -1;
+    for (int i = 0; i < numsSize; i++) {
+        far = MAX(i + nums[i], far);
+        if (far >= (numsSize - 1))
+            return true;
+        if (far <= i)
+            break;
+    }
+    return false;
+}
+
 // 54. Spiral Matrix
 enum {
       GO_COL = 0,
