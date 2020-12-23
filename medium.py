@@ -1,3 +1,26 @@
+# 56. Merge Intervals
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # sort intervals by first number
+        intervals.sort(key=lambda x: x[0])
+        ret = [intervals[0]]
+        j = 0
+        i = 1
+        while i < len(intervals):
+            if ret[j][0] <= intervals[i][0] and ret[j][1] >= intervals[i][1]:
+                print("new:", ret)
+                i += 1
+            elif ret[j][1] >= intervals[i][0]: # overlapped exclusively
+                # intervals = intervals[:i] + [[intervals[i][0], intervals[i+1][1]]] + intervals[i+2:]
+                ret[j] = [ret[j][0], intervals[i][1]]
+                print("new:", ret)
+                i += 1
+            else:
+                ret += [intervals[i]]
+                j += 1
+                i += 1
+        return ret
+
 # 49. Group Anagrams
 class Solution:
     def groupAnagrams(self, strs):
