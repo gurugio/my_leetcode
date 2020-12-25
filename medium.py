@@ -1,3 +1,41 @@
+# 59. Spiral Matrix II
+class Solution:
+    def next_dir(self, dir: int):
+        return (dir + 1) % 4
+
+    def go_one(self, r, c, direction):
+        nc = c
+        nr = r
+        if direction == 0: # right
+            nc = (nc + 1)
+        elif direction == 1: # down
+            nr = (nr + 1)
+        elif direction == 2: # left
+            nc = (nc - 1)
+        elif direction == 3: # up
+            nr = (nr - 1)
+        return (nr, nc)
+    
+    def go(self, ret: List[List[int]], n: int, cur_row: int, cur_col: int, direction: int, index: int):
+        nr, nc = self.go_one(cur_row, cur_col, direction)
+
+        if nc >= n or nr >= n or ret[nr][nc] != 0:
+            direction = self.next_dir(direction)
+            nr, nc = self.go_one(cur_row, cur_col, direction)
+            if nc >= n or nr >= n or ret[nr][nc] != 0:
+                return
+            self.go(ret, n, cur_row, cur_col, direction, index)
+        else:
+            #print("{},{}={}".format(nr, nc, index))
+            ret[nr][nc] = index + 1
+            self.go(ret, n, nr, nc, direction, index + 1)
+            
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        ret = [[0] * n for i in range(n)]
+        ret[0][0] = 1
+        self.go(ret, n, 0, 0, 0, 1)
+        return ret
+   
 # 57. Insert Interval
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
