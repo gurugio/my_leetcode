@@ -1,3 +1,40 @@
+// 61. Rotate List
+struct ListNode* reverse(struct ListNode* head) {
+    struct ListNode *nn, *n;
+    n = head->next;
+    head->next = NULL;
+    while (n) {
+        nn = n->next;
+        n->next = head;
+        head = n;
+        n = nn;
+    }
+    return head;
+}
+
+struct ListNode* rotateRight(struct ListNode* head, int k){
+    struct ListNode *last;
+    int count;
+    
+    if (!head) return NULL;
+    if (!head->next) return head;
+    
+    head = reverse(head);
+    count = 1;
+    for (last = head; last->next != NULL; last = last->next) {
+        count++;
+    }
+    k %= count;
+    for (int i = 0; i < k; i++) {
+        struct ListNode *old = head;
+        head = head->next;
+        last->next = old;
+        last = old;
+        last->next = NULL;
+    }
+    return reverse(head);
+}
+
 // 55. Jump Game
 #if 0 // failed, too slow
 bool canJump(int* nums, int numsSize){
