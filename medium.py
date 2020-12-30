@@ -1,3 +1,17 @@
+# 62. Unique Paths
+class Solution:
+    def path(self, m: int, n:int, memo={}) -> int:
+        if m == 1 or n == 1:
+            return 1
+        key = "{},{}".format(m,n)
+        if key in memo:
+            return memo[key]
+        ret = self.path(m-1, n, memo) + self.path(m, n-1, memo)
+        memo[key] = ret
+        return ret
+    def uniquePaths(self, m: int, n: int) -> int:
+        return self.path(m, n)
+
 # 59. Spiral Matrix II
 class Solution:
     def next_dir(self, dir: int):
