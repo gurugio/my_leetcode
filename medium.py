@@ -1,3 +1,27 @@
+# 63. Unique Paths II
+class Solution:
+    def go(self, grid: List[List[int]], row: int, col: int, memo={}) -> int:
+        if grid[row][col] == 1:
+            return 0
+
+        key = "{}.{}".format(row, col)
+        if key in memo:
+            return memo[key]
+
+        if row == (len(grid) - 1) and col == (len(grid[0]) - 1):
+            return 1
+        elif row == (len(grid) - 1):
+            ret = self.go(grid, row, col+1, memo)
+        elif col == (len(grid[0]) - 1):
+            ret = self.go(grid, row+1, col, memo)
+        else:
+            ret = self.go(grid, row+1, col, memo) + self.go(grid, row, col+1, memo)
+        memo[key] = ret
+        return ret
+        
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        return self.go(obstacleGrid, 0, 0, {})
+    
 # 62. Unique Paths
 class Solution:
     def path(self, m: int, n:int, memo={}) -> int:
