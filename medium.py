@@ -1,3 +1,72 @@
+# 64. Minimum Path Sum: greedy way + memoization
+class Solution:
+    def go(self, grid: List[List[int]], row: int, col: int, memo) -> int:
+        if (row,col) in memo:
+            return memo[(row,col)]
+
+        if col == 0 and row == 0:
+            sum = grid[0][0]
+        elif row > 0 and col > 0:
+            sum = grid[row][col] + min(self.go(grid, row-1, col, memo), self.go(grid, row, col-1, memo))
+        elif col == 0:
+            sum = grid[row][col] + self.go(grid, row-1, col, memo)
+        elif row == 0:
+            sum = grid[row][col] + self.go(grid, row, col-1, memo)
+
+        memo[(row,col)] = sum
+        return sum
+            
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        return self.go(grid, len(grid) - 1, len(grid[0]) - 1, memo={})
+    
+# 64. Minimum Path Sum: greedy way
+# failed: Time Limit Exceeded
+class Solution:
+    def go(self, grid: List[List[int]], row: int, col: int) -> int:
+        if col == 0 and row == 0:
+            return grid[0][0]
+        elif row > 0 and col > 0:
+            return grid[row][col] + min(self.go(grid, row-1, col), self.go(grid, row, col-1))
+        elif col == 0:
+            return grid[row][col] + self.go(grid, row-1, col)
+        elif row == 0:
+            return grid[row][col] + self.go(grid, row, col-1)
+        else:
+            print("error")
+            return 0
+            
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        return self.go(grid, len(grid) - 1, len(grid[0]) - 1)
+
+# 64. Minimum Path Sum: brute force way
+# failed: Time Limit Exceeded
+class Solution:
+    def go(self, grid: List[List[int]], row: int, col: int, sum: int, sum_matrix: List[List[int]]) -> int:
+        sum += grid[row][col]
+        if sum_matrix[row][col] == 0:
+            sum_matrix[row][col] = sum
+        elif sum_matrix[row][col] > sum:
+            sum_matrix[row][col] = sum
+        else:
+            return;
+        
+        last_row = len(grid) - 1
+        last_col = len(grid[0]) - 1
+        if col == last_col and row == last_row:
+            return;
+        if col == last_col:
+            self.go(grid, row+1, col, sum, sum_matrix)
+        elif row == last_row:
+            self.go(grid, row, col+1, sum, sum_matrix)
+        else:
+            self.go(grid, row+1, col, sum, sum_matrix)
+            self.go(grid, row, col+1, sum, sum_matrix)
+    
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        sum_matrix = [[9999999] * len(grid[0]) for i in range(len(grid))]
+        self.go(grid, 0, 0, 0, sum_matrix)
+        return sum_matrix[len(grid)-1][len(grid[0])-1]
+    
 # 63. Unique Paths II
 class Solution:
     def go(self, grid: List[List[int]], row: int, col: int, memo={}) -> int:
