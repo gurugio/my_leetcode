@@ -1,3 +1,32 @@
+# 71. Simplify Path
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        path_list = []
+        index = 0
+        if path[index] != '/':
+            return None
+
+        index = 1
+        while index < len(path):
+            next = path.find("/", index)
+            if next == -1:
+                next = len(path)
+            next_path = path[index:next]
+
+            if next_path == '.':
+                pass
+            elif next_path == '..':
+                if path_list:
+                    path_list.pop()
+            elif next_path:
+                path_list.append(next_path)
+            else:
+                pass
+
+            index = next + 1
+
+        return "/" + "/".join(path_list)   
+
 # 64. Minimum Path Sum: greedy way + memoization
 class Solution:
     def go(self, grid: List[List[int]], row: int, col: int, memo) -> int:
