@@ -1,3 +1,33 @@
+# 73. Set Matrix Zeroes
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        clear_first_row = False
+        clear_first_col = False
+
+        for r in range(len(matrix)):
+            for c in range(len(matrix[r])):
+                if matrix[r][c] == 0:
+                    if r == 0:
+                        clear_first_row = True
+                    if c == 0:
+                        clear_first_col = True
+                    matrix[r][0] = 0
+                    matrix[0][c] = 0
+        for c in range(1, len(matrix[0])):
+            if matrix[0][c] == 0:
+                for r in range(1, len(matrix)):
+                    matrix[r][c] = 0
+        for r in range(1, len(matrix)):
+            if matrix[r][0] == 0:
+                for c in range(1, len(matrix[r])):
+                    matrix[r][c] = 0
+        if clear_first_row:
+            for c in range(len(matrix[0])):
+                matrix[0][c] = 0
+        if clear_first_col:
+            for r in range(len(matrix)):
+                matrix[r][0] = 0
+                
 # 71. Simplify Path
 class Solution:
     def simplifyPath(self, path: str) -> str:
