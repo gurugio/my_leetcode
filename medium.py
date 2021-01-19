@@ -1,3 +1,14 @@
+# 74. Search a 2D Matrix
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        for row in matrix:
+            if target >= row[0] and target <= row[-1]:
+                for i in row:
+                    if target == i:
+                        return True
+                return False
+        return False
+    
 # 73. Set Matrix Zeroes
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
