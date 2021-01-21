@@ -1,3 +1,24 @@
+# 74. Search a 2D Matrix - quick
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        start = 0
+        end = len(matrix) - 1
+        last_col = len(matrix[0]) - 1
+        middle = math.floor((start + end) / 2)
+
+        while start < middle:
+            #print("{} {} {}".format(start, middle, end))
+            if target >= matrix[start][0] and target <= matrix[middle][last_col]:
+                end = middle
+            elif target > matrix[middle][last_col] and target <= matrix[end][last_col]:
+                start = middle + 1
+            else:
+                return False
+            middle = math.floor((start + end) / 2)
+
+        return target in matrix[start] or target in matrix[end]
+
+            
 # 74. Search a 2D Matrix
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
