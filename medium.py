@@ -1,3 +1,21 @@
+# 75. Sort Colors
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        count = [0] * 3
+        for i in range(len(nums)):
+            count[nums[i]] += 1
+        print(count)
+        for i in range(count[0]):
+            nums[i] = 0
+        for i in range(count[1]):
+            nums[i + count[0]] = 1
+        for i in range(count[2]):
+            nums[i + count[0] + count[1]] = 2
+        
+        
 # 74. Search a 2D Matrix - quick
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
