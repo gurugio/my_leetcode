@@ -1,3 +1,28 @@
+# 75. Sort Colors: swap
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        i = 0
+        s = 0
+        e = len(nums) - 1
+        while i <= e:
+            #print("i={} nums={}".format(i, nums))
+            if nums[i] == 0:
+                t = nums[i]
+                nums[i] = nums[s]
+                nums[s] = t
+                s = s + 1
+                if s >= i:
+                    i = i + 1
+            elif nums[i] == 2:
+                t = nums[i]
+                nums[i] = nums[e]
+                nums[e] = t
+                e = e - 1
+            else:
+                i = i + 1
 # 75. Sort Colors
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
