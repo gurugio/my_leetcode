@@ -1,3 +1,17 @@
+# 77. Combinations
+class Solution:
+    def comb(self, nums: List[int], cur: List[int], k: int) -> List[List[int]]:
+        #print("nums={} cur={}".format(nums, cur))
+        if len(cur) == k:
+            return [cur]
+        tmp = []
+        for i in range(len(nums)):
+            tmp += self.comb(nums[i+1:], cur + [nums[i]], k)
+        return tmp
+        
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        nums = [i for i in range(1, n+1)]
+        return self.comb(nums, [], k)
 # 75. Sort Colors: swap
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
