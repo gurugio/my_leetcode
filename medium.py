@@ -1,3 +1,23 @@
+# 78. Subsets
+class Solution:
+    def comb(self, nums: List[int], cur: List[int], k: int) -> List[List[int]]:
+        #print("nums={} cur={}".format(nums, cur))
+        if len(cur) == k:
+            return [cur]
+        tmp = []
+        for i in range(len(nums)):
+            tmp += self.comb(nums[i+1:], cur + [nums[i]], k)
+        return tmp
+        
+    def combine(self, nums: List[int], k: int) -> List[List[int]]:
+        return self.comb(nums, [], k)
+
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        for i in range(len(nums)+1):
+            res += self.combine(nums, i)
+        return res
+
 # 77. Combinations
 class Solution:
     def comb(self, nums: List[int], cur: List[int], k: int) -> List[List[int]]:
