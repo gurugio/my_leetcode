@@ -1,3 +1,40 @@
+# 79. Word Search
+class Solution:
+    def go(self, board, word, r, c, visited):
+        visited[r][c] = True
+        #print(word, r, c, visited)
+        if len(word) == 1:
+            return True
+
+        if (c - 1) >= 0 and board[r][c-1] == word[1] and visited[r][c-1] == False:
+            if self.go(board, word[1:], r, c-1, visited):
+                return True
+
+        if (c + 1) < len(board[0]) and board[r][c+1] == word[1] and visited[r][c+1] == False:
+            if self.go(board, word[1:], r, c+1, visited):
+                return True
+
+        if (r - 1) >= 0 and board[r-1][c] == word[1] and visited[r-1][c] == False:
+            if self.go(board, word[1:], r-1, c, visited):
+                return True
+
+        if (r + 1) < len(board) and board[r+1][c] == word[1] and visited[r+1][c] == False:
+            if self.go(board, word[1:], r+1, c, visited):
+                return True
+
+        visited[r][c] = False
+        return False
+        
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                if board[r][c] == word[0]:
+                    row = len(board)
+                    col = len(board[0])
+                    visited = [[False] * col for i in range(row)]
+                    if self.go(board, word, r, c, visited):
+                        return True
+        return False;
 # 78. Subsets
 class Solution:
     def comb(self, nums: List[int], cur: List[int], k: int) -> List[List[int]]:
