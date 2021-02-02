@@ -1,3 +1,27 @@
+# 80. Remove Duplicates from Sorted Array II
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        ret_len = len(nums)
+
+        for i in range(ret_len):
+            if (i + 1) < ret_len and nums[i] == nums[i + 1]:
+                s = i + 1
+                e = s + 1
+                if e >= ret_len or nums[e] != nums[i]:
+                    continue
+                while e < ret_len:
+                    if nums[s] == nums[e]:
+                        e += 1
+                    else:
+                        break
+                mcount = e - s - 1
+                for k in range(e, ret_len):
+                    nums[k - mcount] = nums[k]
+                #print("s{} e{} c{} {}".format(s, e, mcount, nums))
+
+                ret_len -= mcount
+        return ret_len
+    
 # 79. Word Search
 class Solution:
     def go(self, board, word, r, c, visited):
