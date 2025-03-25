@@ -1,15 +1,12 @@
 use std::io;
 
-fn go(target: i32, count: &mut i32) {
+fn go(target: i32) -> i32 {
     if target == 0 {
-        *count += 1;
+        return 1;
     } else if target > 0 {
-        go(target - 1, count);
-        go(target - 2, count);
-        go(target - 3, count);
+        return go(target - 1) + go(target - 2) + go(target - 3);
     } else {
-        // Do nothing
-        //println!("Do nothing if target is negative: {}", target);
+        return 0;
     }
 }
 
@@ -22,8 +19,6 @@ fn main() {
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
         let num: i32 = input.trim().parse().unwrap();
-        let mut count: i32 = 0;
-        go(num, &mut count);
-        println!("{}", count);
+        println!("{}", go(num));
     }
 }
